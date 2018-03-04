@@ -13,14 +13,14 @@ Email: TCSS360 [AT] kairuni.com <br/>
 
 
 Database Diagram<br/>
-![Database Diagram](/Images/DatabaseDiagram.png)<br/>
+![Database Diagram](/Images/PaperDiagrams/DatabaseDiagram.png)<br/>
 GUI Class Diagram<br/>
-![GUI Class Diagram](/Images/GUIClassDiagram.png)<br/>
+![GUI Class Diagram](/Images/PaperDiagrams/GUIClassDiagram.png)<br/>
 Basic Model Class Diagram<br/>
-![Model Basic Class Diagram](/Images/ModelBasicDiagram.png)<br/>
+![Model Basic Class Diagram](/Images/PaperDiagrams/ModelBasicDiagram.png)<br/>
 New Component Sequence Diagram<br/>
-![New Component Sequence Diagram](/Images/NewComponentSequenceDiagram.png)<br/>
+![New Component Sequence Diagram](/Images/PaperDiagrams/NewComponentSequenceDiagram.png)<br/>
 Startup Sequence Diagram<br/>
-![Startup Sequence Diagram](/Images/StartupSequenceDiagram.png)<br/>
+![Startup Sequence Diagram](/Images/PaperDiagrams/StartupSequenceDiagram.png)<br/>
 About Us Sequence Diagram<br/>
-![About Us Sequence Diagram](/Images/AboutMenuSequenceDiagram.png)<br/>
+![About Us Sequence Diagram](/Images/PaperDiagrams/AboutMenuSequenceDiagram.png)<br/>
