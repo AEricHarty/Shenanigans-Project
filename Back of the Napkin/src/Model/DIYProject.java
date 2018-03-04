@@ -1,4 +1,3 @@
-
 package Model;
 
 import java.math.BigDecimal;
@@ -16,14 +15,17 @@ public class DIYProject {
 	/**The name of this Project.*/
     private String myName;
 
-    /**The misc cost of the component.*/
+    /**The misc cost of the project.*/
     private BigDecimal myMiscCost;
     
     /**The estimated man-hours.*/
     private double myManHrs;
     
-    /**The list of DIYcomponents.*/
-    public LinkedList<DIYComponent> myComponents;
+    /**The current cost per kWh of energy used.*/
+    private BigDecimal myPowerCost;
+
+	/**The list of DIYcomponents.*/
+    public LinkedList<ComponentListItem> myComponents;
     
     /**
      * Constructs a DIYProject with a default name and empty fields.
@@ -33,8 +35,9 @@ public class DIYProject {
     public DIYProject() {
 		myName = "Untitled";
 		myMiscCost = new BigDecimal(0);
+		myPowerCost = new BigDecimal(0);
 		myManHrs = 0;
-		myComponents = new LinkedList<DIYComponent>();
+		myComponents = new LinkedList<ComponentListItem>();
 	}
 
 	/**
@@ -43,6 +46,14 @@ public class DIYProject {
 	 */
 	public String getName() {
 		return myName;
+	}
+	
+	/**
+	 * @author Eric Harty - hartye@uw.edu
+	 * @return the current cost per kWh of energy used
+	 */
+	public BigDecimal getPowerCost() {
+		return myPowerCost;
 	}
 
 	/**
@@ -63,10 +74,39 @@ public class DIYProject {
 	
 	/**
 	 * @author Eric Harty - hartye@uw.edu
-	 * @return the myComponents
+	 * @return the list of <ComponentListItem>
 	 */
-	public LinkedList<DIYComponent> getComponents() {
+	public LinkedList<ComponentListItem> getComponents() {
 		return myComponents;
+	}
+	
+	/**
+	 * Calculates and returns the total energy cost in kWh for this project.
+	 * @author Eric Harty - hartye@uw.edu
+	 * 
+	 * @return the total energy consumption
+	 */
+	public double getTotalEnergy() {
+		double kWh = 0;
+		for(ComponentListItem c : myComponents) {
+        	double subt = c.getComponent().getEnergyConsumption();
+        	subt = subt * c.getQuantity();
+        	kWh += subt;
+        }
+		return kWh;
+	}
+	
+	/**
+	 * Calculates and returns the total energy cost in kWh for this project.
+	 * @author Eric Harty - hartye@uw.edu
+	 * 
+	 * @return the cost to power this project
+	 */
+	public BigDecimal getTotalPowerCost() {
+		BigDecimal total = myPowerCost;
+		BigDecimal use = new BigDecimal(this.getTotalEnergy());
+		total.multiply(use);
+		return total;
 	}
 
 	/**
@@ -77,22 +117,28 @@ public class DIYProject {
 	 */
 	public BigDecimal getCostPerMonth() {
 		BigDecimal total = new BigDecimal(0);
-		for(DIYComponent c : myComponents) {
-        	total.add(c.getCostPerMonth());
+		for(ComponentListItem c : myComponents) {
+        	BigDecimal subt = c.getComponent().getCostPerMonth();
+        	BigDecimal q = new BigDecimal(c.getQuantity());
+        	subt = subt.multiply(q);
+        	total.add(subt);
         }
 		return total;
 	}
 	
 	/**
-	 * Calculates and returns the total up front month for this project.
+	 * Calculates and returns the total up front cost for this project.
 	 * @author Eric Harty - hartye@uw.edu
 	 * 
 	 * @return the Total Cost
 	 */
 	public BigDecimal getTotalUpfrontCost() {
 		BigDecimal total = myMiscCost;
-		for(DIYComponent c : myComponents) {
-        	total.add(c.getCost());
+		for(ComponentListItem c : myComponents) {
+        	BigDecimal subt = c.getComponent().getCost();
+        	BigDecimal q = new BigDecimal(c.getQuantity());
+        	subt = subt.multiply(q);
+        	total.add(subt);
         }
 		return total;
 	}
@@ -104,11 +150,13 @@ public class DIYProject {
 	 * @return the total man-hours
 	 */
 	public double getTotalManHrs() {
-		double total = myManHrs;
-		for(DIYComponent c : myComponents) {
-        	total += c.getManHrs();
+		double hrs = myManHrs;
+		for(ComponentListItem c : myComponents) {
+        	double subt = c.getComponent().getManHrs();
+        	subt = subt * c.getQuantity();
+        	hrs += subt;
         }
-		return total;
+		return hrs;
 	}
 
 	
@@ -121,6 +169,15 @@ public class DIYProject {
 	}
 	
 	/**
+	 * @author Eric Harty - hartye@uw.edu
+	 * @param powerCost the powerCost to set
+	 */
+	public void setPowerCost(BigDecimal powerCost) {
+		myPowerCost = powerCost;
+	}
+	
+	/**
+	 * @author Eric Harty - hartye@uw.edu
 	 * @param the ManHrs to set
 	 */
 	public void setManHrs(double theManHrs) {
@@ -131,33 +188,37 @@ public class DIYProject {
 	 * @author Eric Harty - hartye@uw.edu
 	 * @param the MiscCost to set
 	 */
-	public void setMyMiscCost(BigDecimal theMiscCost) {
+	public void setMiscCost(BigDecimal theMiscCost) {
 		myMiscCost = theMiscCost;
 	}
-	
 
 	/**
-	 * Adds a component to the component list.
+	 * Adds a component with the given quantity to the component list.
 	 * @author Eric Harty - hartye@uw.edu
 	 * 
 	 * @param the Component to add
+	 * @param the Quantity of the component
 	 */
-	public void AddComponent(DIYComponent theComponent) {
-		myComponents.add(theComponent);
+	public void AddComponent(DIYComponent theComponent, int theQuantity) {
+		ComponentListItem c = new ComponentListItem(theComponent, theQuantity);
+		myComponents.add(c);
 	}
 	
 	/**
-	 * Removes a component from the component list.
+	 * Removes a component entry from the component list,
+	 * if there is more than one instance of a component
+	 * (regardless of quantity) in the list, removes the first.
 	 * @author Eric Harty - hartye@uw.edu
 	 * 
 	 * @param the Component to remove
 	 * @throws NoSuchElementException
 	 */
 	public void RemoveComponent(DIYComponent theComponent) {
-		if(!myComponents.contains(theComponent)){
+		ComponentListItem c = new ComponentListItem(theComponent, 1);
+		if(!myComponents.contains(c)){
 			throw new NoSuchElementException(); 
 		}
-		myComponents.remove(theComponent);
+		myComponents.remove(c);
 	}
     
     
