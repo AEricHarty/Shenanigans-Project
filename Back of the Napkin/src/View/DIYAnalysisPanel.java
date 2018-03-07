@@ -1,6 +1,6 @@
 package View;
 
-import Model.DIYProject;
+import Model.Project;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -37,10 +37,10 @@ public class DIYAnalysisPanel {
 	
 	private GridPane myAnalysisPanel;
 	
-	public DIYAnalysisPanel(DIYProject theProject) {
+	public DIYAnalysisPanel(Project theProject) {
 		myHeader = new Label(theProject.getName());
 		myCostLabel = new Label(theProject.getTotalUpfrontCost().toString());
-		myCostPerKHWLabel = new Label(theProject.getTotalPowerCost().toString());
+		myCostPerKHWLabel = new Label(theProject.getPowerCost().toString());
 		myCostPerMonthLabel = new Label(theProject.getCostPerMonth().toString());
 		myWeightLabel = new Label(theProject.getMiscCost().toString());
 		myManHoursLabel = new Label(theProject.getManHrs() + "");

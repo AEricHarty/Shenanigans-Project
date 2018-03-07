@@ -3,8 +3,8 @@ package View;
 import java.util.List;
 
 import Model.ComponentListItem;
-import Model.DIYComponent;
-import Model.DIYProject;
+import Model.Component;
+import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -16,7 +16,7 @@ public class DIYProjectPanel {
 	
 	private static final String REMOVE = "Remove";
 	
-	private DIYProject myProject;
+	private Project myProject;
 	
 	private Button myAddComponentButton;
 	
@@ -26,7 +26,7 @@ public class DIYProjectPanel {
 	
 	private Pane myProjectPanel;
 	
-	public DIYProjectPanel(final DIYProject theProject) {
+	public DIYProjectPanel(final Project theProject) {
 		myProject = theProject;
 		myAddComponentButton = createAddButton();
 		myRemoveComponentButton = createRemoveButton();
@@ -73,7 +73,7 @@ public class DIYProjectPanel {
         return pane;
 	}
 	
-	public DIYProject getProject() {
+	public Project getProject() {
 		return myProject;
 	}
 	
@@ -97,7 +97,7 @@ public class DIYProjectPanel {
 		
 	}
 	
-	public void addComponent(final DIYComponent theComponent, final int theQuantity) {
+	public void addComponent(final Component theComponent, final int theQuantity) {
 		myComponentListItem.add(new ComponentListItem(theComponent, theQuantity));
 	}
 	

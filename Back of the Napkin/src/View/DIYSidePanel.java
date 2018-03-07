@@ -2,7 +2,7 @@ package View;
 
 import java.util.List;
 
-import Model.DIYProject;
+import Model.Project;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -14,11 +14,11 @@ public class DIYSidePanel {
 	
 	private GridPane mySidePanel;
 	
-	public DIYSidePanel(final List<DIYProject> theProjectList) {
+	public DIYSidePanel(final List<Project> theProjectList) {
 		mySidePanel = buildSidePanel(theProjectList);
 	}
 	
-	private GridPane buildSidePanel(final List<DIYProject> theProjectList) {
+	private GridPane buildSidePanel(final List<Project> theProjectList) {
 		final GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);

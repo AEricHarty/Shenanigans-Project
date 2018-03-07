@@ -3,7 +3,7 @@ package View;
 import java.util.LinkedList;
 import java.util.List;
 
-import Model.DIYProject;
+import Model.Project;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -22,11 +22,11 @@ public class DIYWindow extends Application {
         primaryStage.setTitle("Back of the Napkin!");
         
         // temp project and list, used for testing
-        final DIYProject project = new DIYProject();
-        final List<DIYProject> list = new LinkedList<>();
-        list.add(new DIYProject());
-        list.add(new DIYProject());
-        list.add(new DIYProject());
+        final Project project = new Project();
+        final List<Project> list = new LinkedList<>();
+        list.add(new Project());
+        list.add(new Project());
+        list.add(new Project());
         
         BorderPane border = new BorderPane();
 
