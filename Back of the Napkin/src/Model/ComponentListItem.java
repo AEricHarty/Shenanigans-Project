@@ -9,7 +9,7 @@ package Model;
 public class ComponentListItem {
 	
 	/**The component.*/
-    private final DIYComponent myComponent;
+    private final Component myComponent;
 
     /**The quantity of the component in the list.*/
     private int myQuantity;
@@ -22,7 +22,7 @@ public class ComponentListItem {
      * @param theQuantity
      * @throws IllegalArgumentException if theQuantity is less than or equal to zero
      */
-    public ComponentListItem(final DIYComponent theComponent, final int theQuantity) {
+    public ComponentListItem(final Component theComponent, final int theQuantity) {
 		myComponent = theComponent;
 		
 		if(theQuantity <= 0) {
@@ -45,7 +45,7 @@ public class ComponentListItem {
 	 * 
 	 * @return the Component
 	 */
-	public DIYComponent getComponent() {
+	public Component getComponent() {
 		return myComponent;
 	}
 

@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * @author Eric Harty hartye@uw.edu
  * @version .75
  */
-public class DIYProject {
+public class Project {
 
 	/**The name of this Project.*/
     private String myName;
@@ -32,7 +32,7 @@ public class DIYProject {
      * @author Eric Harty - hartye@uw.edu
      * 
      */
-    public DIYProject() {
+    public Project() {
 		myName = "Untitled";
 		myMiscCost = new BigDecimal(0);
 		myPowerCost = new BigDecimal(0);
@@ -199,7 +199,7 @@ public class DIYProject {
 	 * @param the Component to add
 	 * @param the Quantity of the component
 	 */
-	public void AddComponent(DIYComponent theComponent, int theQuantity) {
+	public void AddComponent(Component theComponent, int theQuantity) {
 		ComponentListItem c = new ComponentListItem(theComponent, theQuantity);
 		myComponents.add(c);
 	}
@@ -213,7 +213,7 @@ public class DIYProject {
 	 * @param the Component to remove
 	 * @throws NoSuchElementException
 	 */
-	public void RemoveComponent(DIYComponent theComponent) {
+	public void RemoveComponent(Component theComponent) {
 		ComponentListItem c = new ComponentListItem(theComponent, 1);
 		if(!myComponents.contains(c)){
 			throw new NoSuchElementException(); 

@@ -39,4 +39,11 @@ public class ComponentDatabase {
 			return 0;
 		}
 	}
+	
+	Component getComponent(int theID) {
+		
+		
+		
+		return null;
+	}
 }

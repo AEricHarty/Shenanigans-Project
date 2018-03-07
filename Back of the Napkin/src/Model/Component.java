@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * @author Eric Harty - hartye@uw.edu
  * @version .75
  */
-public class DIYComponent {
+public class Component {
 
 	/**The ID of this component.*/
     private final String myID;
@@ -48,6 +48,7 @@ public class DIYComponent {
     public final LinkedList<ComponentListItem> mySubComponents;
     
     
+    
     /**
      * Constructs a DIYComponent with the specified name and quantity.
      * @author Eric Harty - hartye@uw.edu
@@ -65,7 +66,7 @@ public class DIYComponent {
      * @param theManHrs
      * @param theSubComponents - LinkedList<ComponentListItem>
      */
-    public DIYComponent(final String theID, final String theName, final BigDecimal theCost,
+    public Component(final String theID, final String theName, final BigDecimal theCost,
     		final BigDecimal theCostPerMonth, final double theEnergyConsumption,
     		final double theWidth, final double theLength, final double theHeight, 
     		final double theWeight, final String theMaterial, final double theManHrs,
@@ -292,10 +293,10 @@ public class DIYComponent {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof DIYComponent)) {
+		if (!(obj instanceof Component)) {
 			return false;
 		}
-		DIYComponent other = (DIYComponent) obj;
+		Component other = (Component) obj;
 		if (myCost == null) {
 			if (other.myCost != null) {
 				return false;
