@@ -7,6 +7,7 @@ import java.util.LinkedList;
  * A component for a DIY project.
  * 
  * @author Eric Harty - hartye@uw.edu
+ * @modified Keegan Wantz - wantzkt@uw.edu (see ctor, getCostPerManHr, getRadius)
  * @version .75
  */
 public class Component {
@@ -23,9 +24,6 @@ public class Component {
     /**The unit price per month of the component.*/
     private final BigDecimal myCostPerMonth;
     
-    /**The energy consumption in kilowatt/hour of the component.*/
-    private final double myEnergyConsumption;
-    
     /**The double width of the component.*/
     private final double myWidth;
     
@@ -34,6 +32,9 @@ public class Component {
     
     /**The double height of the component.*/
     private final double myHeight;
+    
+    /**The double radius of the component.*/
+    private final double myRadius;
     
     /**The double weight of the component.*/
     private final double myWeight;
@@ -44,6 +45,9 @@ public class Component {
     /**The estimated man-hours.*/
     private final double myManHrs;
     
+    /**The cost per man hours*/
+    private final BigDecimal myCostPerManHr;
+    
     /**The list of subcomponents.*/
     public final LinkedList<ComponentListItem> mySubComponents;
     
@@ -52,12 +56,12 @@ public class Component {
     /**
      * Constructs a DIYComponent with the specified name and quantity.
      * @author Eric Harty - hartye@uw.edu
+     * @modified Keegan Wantz - wantzkt@uw.edu (added man hour cost, removed energy cost, added radius)
      * 
      * @param theID
      * @param theName
      * @param theCost - unit cost
      * @param theCostPerMonth
-     * @param theEnergyConsumption
      * @param theWidth
      * @param theLength
      * @param theHeight
@@ -67,21 +71,22 @@ public class Component {
      * @param theSubComponents - LinkedList<ComponentListItem>
      */
     public Component(final String theID, final String theName, final BigDecimal theCost,
-    		final BigDecimal theCostPerMonth, final double theEnergyConsumption,
-    		final double theWidth, final double theLength, final double theHeight, 
-    		final double theWeight, final String theMaterial, final double theManHrs,
+    		final BigDecimal theCostPerMonth, final double theWidth, final double theLength,
+    		final double theHeight, final double theRadius, final double theWeight, final String theMaterial,
+    		final double theManHrs, final BigDecimal theManHourCost,
     		final LinkedList<ComponentListItem> theSubComponents) {
 		myID = theID;
     	myName = theName;
 		myCost = theCost;
 		myCostPerMonth = theCostPerMonth;
-		myEnergyConsumption = theEnergyConsumption;
 		myWidth = theWidth;
 		myLength = theLength;
 		myHeight = theHeight;
+		myRadius = theRadius;
 		myWeight = theWeight;
 		myMaterial = theMaterial;
 		myManHrs = theManHrs;
+		myCostPerManHr = theManHourCost;
 		mySubComponents = theSubComponents;
 	}
 
@@ -102,14 +107,6 @@ public class Component {
 		return myName;
 	}
 	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the EnergyConsumption
-	 */
-	public double getEnergyConsumption() {
-		return myEnergyConsumption;
-	}
-
 	/**
 	 * @author Eric Harty - hartye@uw.edu
 	 * @return the Width
@@ -140,6 +137,14 @@ public class Component {
 	 */
 	public double getWeight() {
 		return myWeight;
+	}
+	
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 * @return the radius of this component.
+	 */
+	public double getMyRadius() {
+		return myRadius;
 	}
 
 	/**
@@ -243,7 +248,33 @@ public class Component {
     	return hrs;
     }
 
-
+    /**
+     * Returns the cost per man hour of this component.
+     * 
+     * @author Keegan Wantz - wantzkt@uw.edu
+     * 
+     * @return The summed cost of this component.
+     */
+    public final BigDecimal getUnitCostPerManHr() {
+    	return myCostPerManHr;
+    }
+    
+    /**
+     * Returns the cost per man hour of this + all subcomponents.
+     * 
+     * @author Keegan Wantz - wantzkt@uw.edu
+     * 
+     * @return The summed cost of this component + all subcomponents.
+     */
+    public final BigDecimal getCostPerManHr() {
+    	BigDecimal cpmh = myCostPerManHr;
+    	for(ComponentListItem c : mySubComponents) {
+    		cpmh = cpmh.add(c.getComponent().getCostPerManHr());
+        }
+    	
+    	return cpmh;
+    }
+    
     /**
 	 * Override so Components can be compared.
 	 * @author Eric Harty - hartye@uw.edu
@@ -258,8 +289,6 @@ public class Component {
 		result = prime * result + ((myCost == null) ? 0 : myCost.hashCode());
 		result = prime * result + ((myCostPerMonth == null) ? 0 : myCostPerMonth.hashCode());
 		long temp;
-		temp = Double.doubleToLongBits(myEnergyConsumption);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(myHeight);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((myID == null) ? 0 : myID.hashCode());
@@ -311,8 +340,7 @@ public class Component {
 		} else if (!myCostPerMonth.equals(other.myCostPerMonth)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(myEnergyConsumption) != 
-				Double.doubleToLongBits(other.myEnergyConsumption)) {
+		if (!myCostPerManHr.equals(other.myCostPerManHr)) {
 			return false;
 		}
 		if (Double.doubleToLongBits(myHeight) != Double.doubleToLongBits(other.myHeight)) {

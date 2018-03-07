@@ -86,7 +86,7 @@ public class Project {
 	 * 
 	 * @return the total energy consumption
 	 */
-	public double getTotalEnergy() {
+	/*public double getTotalEnergy() {
 		double kWh = 0;
 		for(ComponentListItem c : myComponents) {
         	double subt = c.getComponent().getEnergyConsumption();
@@ -94,7 +94,7 @@ public class Project {
         	kWh += subt;
         }
 		return kWh;
-	}
+	}*/
 	
 	/**
 	 * Calculates and returns the total energy cost in kWh for this project.
@@ -102,12 +102,12 @@ public class Project {
 	 * 
 	 * @return the cost to power this project
 	 */
-	public BigDecimal getTotalPowerCost() {
+	/*public BigDecimal getTotalPowerCost() {
 		BigDecimal total = myPowerCost;
 		BigDecimal use = new BigDecimal(this.getTotalEnergy());
 		total.multiply(use);
 		return total;
-	}
+	}*/
 
 	/**
 	 * Calculates and returns the cost per month for this project.
