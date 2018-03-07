@@ -41,6 +41,20 @@ public class ComponentDatabase {
 	}
 	
 	Component getComponent(int theID) {
+		String query = "select " + 
+				" Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
+				"from Components\n" + 
+				"where ID = " + theID; 
+		
+		
+		return null;
+	}
+	
+	List<Component> getAllComponents() {
+		String query = "select " + 
+				" Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
+				"from Components;";
+		
 		
 		
 		
