@@ -3,6 +3,7 @@ package View;
 import java.util.LinkedList;
 import java.util.List;
 
+import Model.Component;
 import Model.ComponentDatabase;
 import Model.Project;
 import javafx.application.Application;
@@ -32,6 +33,13 @@ public class DIYWindow extends Application {
 			information.setContentText("Closing application.");
 			information.showAndWait();
 	    	Platform.exit();
+    	} else {
+    		System.out.println("Database test:");
+    		List<Component> cList = myComponentDatabase.getAllComponents();
+    		for (Component c : cList) {
+    			System.out.println(c.getMyID() + ", " + c.getName() + ", " + c.getCost() + ", " + c.getCostPerMonth());
+    		}
+    		
     	}
 	}
 	

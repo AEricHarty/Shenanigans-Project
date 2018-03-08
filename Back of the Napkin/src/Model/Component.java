@@ -1,7 +1,8 @@
 package Model;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A component for a DIY project.
@@ -13,7 +14,7 @@ import java.util.LinkedList;
 public class Component {
 
 	/**The ID of this component.*/
-    private final String myID;
+    private final int myID;
 	
     /**The name of this component.*/
     private final String myName;
@@ -49,7 +50,7 @@ public class Component {
     private final BigDecimal myCostPerManHr;
     
     /**The list of subcomponents.*/
-    public final LinkedList<ComponentListItem> mySubComponents;
+    public final List<ComponentListItem> mySubComponents;
     
     
     
@@ -57,6 +58,7 @@ public class Component {
      * Constructs a DIYComponent with the specified name and quantity.
      * @author Eric Harty - hartye@uw.edu
      * @modified Keegan Wantz - wantzkt@uw.edu (added man hour cost, removed energy cost, added radius)
+     * @modified Keegan Wantz - wantzkt@uw.edu (List instead of LinkedList)
      * 
      * @param theID
      * @param theName
@@ -70,11 +72,11 @@ public class Component {
      * @param theManHrs
      * @param theSubComponents - LinkedList<ComponentListItem>
      */
-    public Component(final String theID, final String theName, final BigDecimal theCost,
+    public Component(final int theID, final String theName, final BigDecimal theCost,
     		final BigDecimal theCostPerMonth, final double theWidth, final double theLength,
     		final double theHeight, final double theRadius, final double theWeight, final String theMaterial,
     		final double theManHrs, final BigDecimal theManHourCost,
-    		final LinkedList<ComponentListItem> theSubComponents) {
+    		final List<ComponentListItem> theSubComponents) {
 		myID = theID;
     	myName = theName;
 		myCost = theCost;
@@ -87,14 +89,18 @@ public class Component {
 		myMaterial = theMaterial;
 		myManHrs = theManHrs;
 		myCostPerManHr = theManHourCost;
-		mySubComponents = theSubComponents;
+		
+		if (theSubComponents == null)
+			mySubComponents = new ArrayList<>();
+		else
+			mySubComponents = theSubComponents;
 	}
 
 	/**
 	 * @author Eric Harty - hartye@uw.edu
 	 * @return the myID
 	 */
-	public String getMyID() {
+	public int getMyID() {
 		return myID;
 	}
 
@@ -157,9 +163,10 @@ public class Component {
 
 	/**
 	 * @author Eric Harty - hartye@uw.edu
+	 * @modified Keegan Wantz - wantzkt@uw.edu (List instead of LinkedList)
 	 * @return the SubComponents
 	 */
-	public LinkedList<ComponentListItem> getSubComponents() {
+	public List<ComponentListItem> getSubComponents() {
 		return mySubComponents;
 	}
 
@@ -291,7 +298,8 @@ public class Component {
 		long temp;
 		temp = Double.doubleToLongBits(myHeight);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((myID == null) ? 0 : myID.hashCode());
+		temp = Double.doubleToLongBits(myID);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(myLength);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(myManHrs);
@@ -346,11 +354,7 @@ public class Component {
 		if (Double.doubleToLongBits(myHeight) != Double.doubleToLongBits(other.myHeight)) {
 			return false;
 		}
-		if (myID == null) {
-			if (other.myID != null) {
-				return false;
-			}
-		} else if (!myID.equals(other.myID)) {
+		if (myID != other.myID) {
 			return false;
 		}
 		if (Double.doubleToLongBits(myLength) != Double.doubleToLongBits(other.myLength)) {
