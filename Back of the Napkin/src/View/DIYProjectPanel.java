@@ -4,6 +4,7 @@ import java.util.List;
 
 import Model.ComponentListItem;
 import Model.Component;
+import Model.ComponentDatabase;
 import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,24 +27,25 @@ public class DIYProjectPanel {
 	
 	private Pane myProjectPanel;
 	
-	public DIYProjectPanel(final Project theProject) {
+	public DIYProjectPanel(final Project theProject, ComponentDatabase theComponentDatabase) {
 		myProject = theProject;
-		myAddComponentButton = createAddButton();
+		myAddComponentButton = createAddButton(theComponentDatabase);
 		myRemoveComponentButton = createRemoveButton();
 		myComponentListItem = theProject.getComponents();
 		
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 	}
 	
-	private Button createAddButton() {
+	private Button createAddButton(ComponentDatabase theComponentDatabase) {
 		final Button addButton = new Button(ADD);
 		addButton.setLayoutX(0);
 		addButton.setLayoutY(650);
+		DIYProjectPanel that = this;
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				
+				new DIYComponentSelectorDialog(theComponentDatabase, that).view();
 			}
 		});
 		

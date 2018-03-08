@@ -19,28 +19,29 @@ public class ComponentDatabase {
 	Connection conn;
 	Statement stmt;
 	
-	ComponentDatabase() {
+	public ComponentDatabase() {
 		conn = null;
-		stmt = null;
 	}
 	
-	int connect() {
+	public int connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:database.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:Components.db");
 			
 			Statement stmt = conn.createStatement();
 			stmt.setQueryTimeout(30);
 			
 			return 1;
 		} catch (SQLException e) {
+			System.out.println("SQL EXCEPTION");
 			return 0;
 		} catch (ClassNotFoundException e) {
+			System.out.println("CLASS NOT FOUND EXCEPTION");
 			return 0;
 		}
 	}
 	
-	Component getComponent(int theID) {
+	public Component getComponent(int theID) {
 		String query = "select " + 
 				" Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
 				"from Components\n" + 
@@ -50,7 +51,7 @@ public class ComponentDatabase {
 		return null;
 	}
 	
-	List<Component> getAllComponents() {
+	public List<Component> getAllComponents() {
 		String query = "select " + 
 				" Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
 				"from Components;";

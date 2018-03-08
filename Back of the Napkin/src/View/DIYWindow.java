@@ -3,15 +3,29 @@ package View;
 import java.util.LinkedList;
 import java.util.List;
 
+import Model.ComponentDatabase;
 import Model.Project;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
  
 public class DIYWindow extends Application {
 
+	ComponentDatabase myComponentDatabase;
+	
+	public DIYWindow() {
+    	myComponentDatabase = new ComponentDatabase();
+    	if (myComponentDatabase.connect() != 1) {
+			Alert information = new Alert(AlertType.INFORMATION);
+			information.setTitle("Failed to Open Database");
+			information.setHeaderText("Closing application.");
+			information.showAndWait();
+    	}
+	}
 	
     public static void main(String[] args) {
         launch(args);
@@ -45,7 +59,7 @@ public class DIYWindow extends Application {
         border.setLeft(sidePanel.getPanel());
         
         // Project Panel (center)
-        final DIYProjectPanel projectPanel = new DIYProjectPanel(project);
+        final DIYProjectPanel projectPanel = new DIYProjectPanel(project, myComponentDatabase);
         border.setCenter(projectPanel.getPanel());
         
         

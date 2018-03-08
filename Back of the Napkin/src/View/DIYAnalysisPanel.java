@@ -10,9 +10,7 @@ public class DIYAnalysisPanel {
 	private static final Label HEADER = new Label("Header");
 	
 	private static final Label COST = new Label("Cost");
-	
-	private static final Label COST_PER_KHW = new Label("Cost Per KHW");
-	
+		
 	private static final Label COST_PER_MONTH = new Label("Cost Per Month");
 	
 	private static final Label WEIGHT = new Label("Weight");
@@ -24,9 +22,7 @@ public class DIYAnalysisPanel {
 	private Label myHeader;
 	
 	private Label myCostLabel;
-	
-	private Label myCostPerKHWLabel;
-	
+		
 	private Label myCostPerMonthLabel;
 	
 	private Label myWeightLabel;
@@ -40,7 +36,6 @@ public class DIYAnalysisPanel {
 	public DIYAnalysisPanel(Project theProject) {
 		myHeader = new Label(theProject.getName());
 		myCostLabel = new Label(theProject.getTotalUpfrontCost().toString());
-		myCostPerKHWLabel = new Label(theProject.getPowerCost().toString());
 		myCostPerMonthLabel = new Label(theProject.getCostPerMonth().toString());
 		myWeightLabel = new Label(theProject.getMiscCost().toString());
 		myManHoursLabel = new Label(theProject.getManHrs() + "");
@@ -59,8 +54,6 @@ public class DIYAnalysisPanel {
         GridPane.setConstraints(myHeader, 1, 0);
         GridPane.setConstraints(COST, 0, 1);
         GridPane.setConstraints(myCostLabel, 1, 1);
-        GridPane.setConstraints(COST_PER_KHW, 0, 2);
-        GridPane.setConstraints(myCostPerKHWLabel, 1, 2);
         GridPane.setConstraints(COST_PER_MONTH, 0, 3);
         GridPane.setConstraints(myCostPerMonthLabel, 1, 3);
         GridPane.setConstraints(WEIGHT, 0, 4);
@@ -70,7 +63,7 @@ public class DIYAnalysisPanel {
         GridPane.setConstraints(COST_PER_MAN_HOUR, 0, 6);
         GridPane.setConstraints(myCostPerManHourLabel, 1, 6);
         grid.getChildren().addAll(HEADER, myHeader, COST, myCostLabel,
-        		COST_PER_KHW, myCostPerKHWLabel, COST_PER_MONTH, myCostPerMonthLabel,
+        		COST_PER_MONTH, myCostPerMonthLabel,
         		WEIGHT, myWeightLabel, MAN_HOURS, myManHoursLabel,
         		COST_PER_MAN_HOUR, myCostPerManHourLabel);
         
@@ -83,10 +76,6 @@ public class DIYAnalysisPanel {
 	
 	public Label getCostLabel() {
 		return myCostLabel;
-	}
-	
-	public Label getCostPerKHWLabel() {
-		return myCostPerKHWLabel;
 	}
 	
 	public Label getCostPerMonthLabel() {

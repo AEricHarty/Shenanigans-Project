@@ -24,6 +24,7 @@ public class DIYComponentSelectorDialog {
 	private Dialog myDialog;
 	private GridPane myComponentGrid;
 	private ComponentDatabase myComponentDB;
+	private DIYProjectPanel myProjectPanel;
 	private int myOpenRow;
 	
 	/**
@@ -35,8 +36,9 @@ public class DIYComponentSelectorDialog {
 	 * Constructs the DIYComponentSelectorDialog.
 	 */
 	@SuppressWarnings("rawtypes") // I'm not sure what this is for (Aaron 3/6 9:58pm)
-	public DIYComponentSelectorDialog(ComponentDatabase theDB) {
+	public DIYComponentSelectorDialog(ComponentDatabase theDB, DIYProjectPanel theProjectPanel) {
 		myComponentDB = theDB;
+		myProjectPanel = theProjectPanel;
 		myDialog = new Dialog();
 		myComponentGrid = new GridPane();
 		myOpenRow = 1; //Keeps track of the open row like a stack pointer (Aaron 3/6 9:58pm)
