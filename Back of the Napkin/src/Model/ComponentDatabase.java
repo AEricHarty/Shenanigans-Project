@@ -9,28 +9,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ComponentDatabase {
 
+	private Map<Integer, Component> myCachedComponents;
+	
 	// Load sqlite JDBC driver
-	Connection conn;
-	Statement stmt;
+	private Connection conn;
+	//Statement stmt;
 	
 	public ComponentDatabase() {
 		conn = null;
+		
+		myCachedComponents = new HashMap<>();
 	}
 	
 	public int connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:Components.db");
-			
-			Statement stmt = conn.createStatement();
-			stmt.setQueryTimeout(30);
-			
+						
 			return 1;
 		} catch (SQLException e) {
 			System.out.println("SQL EXCEPTION");
@@ -45,7 +48,18 @@ public class ComponentDatabase {
 		String query = "select " + 
 				" Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
 				"from Components\n" + 
-				"where ID = " + theID; 
+				"where ID = " + theID;
+
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.setQueryTimeout(30);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		
 		return null;

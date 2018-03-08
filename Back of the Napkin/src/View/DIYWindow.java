@@ -6,6 +6,7 @@ import java.util.List;
 import Model.ComponentDatabase;
 import Model.Project;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
@@ -17,13 +18,20 @@ public class DIYWindow extends Application {
 
 	ComponentDatabase myComponentDatabase;
 	
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 * 
+	 * Constructs a DIY Window and connects to the component database. If it fails to connect, then the application cannot run.
+	 **/
 	public DIYWindow() {
     	myComponentDatabase = new ComponentDatabase();
     	if (myComponentDatabase.connect() != 1) {
 			Alert information = new Alert(AlertType.INFORMATION);
 			information.setTitle("Failed to Open Database");
-			information.setHeaderText("Closing application.");
+			information.setHeaderText("Failed to open the database.");
+			information.setContentText("Closing application.");
 			information.showAndWait();
+	    	Platform.exit();
     	}
 	}
 	
