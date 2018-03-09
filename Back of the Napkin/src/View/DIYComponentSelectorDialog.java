@@ -45,7 +45,7 @@ public class DIYComponentSelectorDialog extends DialogPane {
 	private BorderPane borderSplitter;
 	
 	//Returned by this dialog to the 'add component' button.
-	private Component myReturnComponent;
+	private Component mySelectedComponent;
 	
 	//The component database for the current project
 	private ComponentDatabase myDB;
@@ -84,7 +84,7 @@ public class DIYComponentSelectorDialog extends DialogPane {
 		myComponentGrid = new GridPane();
 		myOpenRow = 1; //Keeps track of the open row like a stack pointer (Aaron 3/6 9:58pm)
 		mySelectGroup = new ToggleGroup();
-		myReturnComponent = null;
+		mySelectedComponent = null;
 		myProject = theProject;
 		
 		this.initDialog();
@@ -114,13 +114,13 @@ public class DIYComponentSelectorDialog extends DialogPane {
 		myDialog.setHeaderText("Choose a component then click apply to add it to your " + myProject.getName() + " project.");
 		myDialog.setResizable(true);
 
-		// Associates each radio button with its respective userData Component (Aaron 3/8/2018 6:36pm)
+		// Associates each toggle button with its respective userData Component (Aaron 3/8/2018 6:36pm)
 		mySelectGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldToggle, Toggle newToggle) {
 				if (mySelectGroup.getSelectedToggle() != null
 						&& mySelectGroup.getSelectedToggle().getUserData() != null) {
-					myReturnComponent = (Component) mySelectGroup.getSelectedToggle().getUserData();
+					mySelectedComponent = (Component) mySelectGroup.getSelectedToggle().getUserData();
 				}				
 			}			
 		});
@@ -157,12 +157,12 @@ public class DIYComponentSelectorDialog extends DialogPane {
 		myDialog.getDialogPane().getButtonTypes().add(cancelButton);
 		
 		// Associates the 'APPLY' ButtonType with the selected Component for returning from this dialog.
-		// Actual return value (Optional<Component>) is retrieved from the view() method.
+		// Actual return value (Optional<Component>) is retrieved via the view() method.
 		myDialog.setResultConverter(new Callback<ButtonType, Component>() {
 			@Override
 			public Component call(ButtonType b) {				
 				if (b == applyButton) {
-					return myReturnComponent;
+					return mySelectedComponent;
 				}
 				return null;
 			}			
