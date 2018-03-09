@@ -9,6 +9,7 @@ import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 public class DIYProjectPanel {
@@ -35,8 +36,8 @@ public class DIYProjectPanel {
 	
 	private Button createAddButton(ComponentDatabase theComponentDatabase) {
 		final Button addButton = new Button(ADD);
-		addButton.setLayoutX(100);
-		addButton.setLayoutY(650);
+		//addButton.setLayoutX(100);
+		//addButton.setLayoutY(650);
 		DIYProjectPanel that = this;
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			
@@ -51,8 +52,8 @@ public class DIYProjectPanel {
 	
 	private Button createRemoveButton() {
 		final Button removeButton = new Button(REMOVE);
-		removeButton.setLayoutX(590);
-		removeButton.setLayoutY(650);
+		//removeButton.setLayoutX(590);
+		//removeButton.setLayoutY(650);
 		removeButton.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -65,12 +66,18 @@ public class DIYProjectPanel {
 	}
 	
 	private Pane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
-		final Pane pane = new Pane();
-		
-        pane.getChildren().add(theAddButton);
-        pane.getChildren().add(theRemoveButton);
-        pane.setStyle("-fx-background-color: #ffffff");
-        return pane;
+		//final Pane pane = new Pane();
+
+        BorderPane border = new BorderPane();
+        BorderPane bottomSplitter = new BorderPane();
+        border.setBottom(bottomSplitter);
+        bottomSplitter.setLeft(theAddButton);
+        bottomSplitter.setRight(theRemoveButton);
+        //pane.getChildren().add(theAddButton);
+        //pane.getChildren().add(theRemoveButton);
+        
+        border.setStyle("-fx-background-color: #ffffff");
+        return border;
 	}
 	
 	public Project getProject() {
