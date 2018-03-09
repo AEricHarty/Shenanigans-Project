@@ -1,12 +1,18 @@
 package View;
 
 import Model.ComponentDatabase;
+
+import java.util.Optional;
+
 import Model.Component;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -21,7 +27,7 @@ import javafx.util.Callback;
  * 
  * This class also calls the add new component button.
  */
-public class DIYComponentSelectorDialog extends Dialog<Component>{
+public class DIYComponentSelectorDialog extends Dialog<Component> {
 	
 	//@SuppressWarnings("rawtypes") // Dialog supports Optional type. I'm not sure how to use this (Aaron 3/8/18 3:08pm)
 	private Dialog<Component> myDialog;
@@ -29,7 +35,8 @@ public class DIYComponentSelectorDialog extends Dialog<Component>{
 	private ComponentDatabase myDB;
 	private DIYProjectPanel myProjectPanel; 
 	private int myOpenRow; //stack pointer
-	private ToggleGroup selectGroup;
+	private ToggleGroup mySelectGroup;
+	private Component myReturnComponent;
 	
 	/**
 	 * @author Aaron Bardsley
@@ -46,7 +53,8 @@ public class DIYComponentSelectorDialog extends Dialog<Component>{
 		myDialog = new Dialog<Component>();
 		myComponentGrid = new GridPane();
 		myOpenRow = 1; //Keeps track of the open row like a stack pointer (Aaron 3/6 9:58pm)
-		selectGroup = new ToggleGroup();
+		mySelectGroup = new ToggleGroup();
+		myReturnComponent = null;
 		
 		
 		initDialog();
@@ -87,6 +95,30 @@ public class DIYComponentSelectorDialog extends Dialog<Component>{
 		myComponentGrid.setGridLinesVisible(true);
 		myDialog.getDialogPane().setContent(myComponentGrid);
 		
+		mySelectGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
+				if (mySelectGroup.getSelectedToggle() != null
+						&& mySelectGroup.getSelectedToggle().getUserData() != null) {
+					myReturnComponent = (Component) mySelectGroup.getSelectedToggle().getUserData();
+				}				
+			}			
+		});
+		
+		myDialog.setResultConverter(new Callback<ButtonType, Component>() {
+
+			@Override
+			public Component call(ButtonType b) {
+				
+				if (b == okButton) {
+					return myReturnComponent;
+				}
+				
+				return null;
+			}
+			
+		});
 		
 	}
 	
@@ -101,7 +133,8 @@ public class DIYComponentSelectorDialog extends Dialog<Component>{
 		addRowStack();
 
 		ToggleButton componentSelect = new ToggleButton();
-		componentSelect.setToggleGroup(selectGroup);
+		componentSelect.setToggleGroup(mySelectGroup);
+		componentSelect.setUserData(theComponent);
 		
 		myComponentGrid.add(componentSelect, 1, myOpenRow);
 		myComponentGrid.add(makeLabel(theComponent.getName()), 2, myOpenRow);
@@ -129,16 +162,6 @@ public class DIYComponentSelectorDialog extends Dialog<Component>{
 		for (Component component : myDB.getAllComponents()) {
 			addComponent(component);
 		}
-	}
-	
-	/**
-	 * @author Aaron Bardsley
-	 * @date 3/6/2018 10:09pm
-	 * 
-	 * Displays the dialog (temporary)
-	 */
-	public void view() {
-		myDialog.showAndWait();
 	}
 	
 	/**
