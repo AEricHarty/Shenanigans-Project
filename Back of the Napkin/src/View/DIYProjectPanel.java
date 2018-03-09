@@ -36,6 +36,8 @@ public class DIYProjectPanel {
 	
 	private ComponentDatabase myComponentDatabase;
 	
+	private DIYComponentSelectorDialog dialog;
+	
 	public DIYProjectPanel(final Project theProject, ComponentDatabase theComponentDatabase) {
 		myProject = theProject;
 		myComponentDatabase = theComponentDatabase;
@@ -44,6 +46,9 @@ public class DIYProjectPanel {
 		myRemoveComponentButton = createRemoveButton();
 		
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
+		
+
+		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this);
 	}
 	
 	/**
@@ -58,13 +63,10 @@ public class DIYProjectPanel {
 	 */
 	private Button createAddButton(ComponentDatabase theComponentDatabase) {
 		final Button addButton = new Button(ADD); //Khoa Doan
-		DIYProjectPanel that = this; //Khoa Doan
 		
-		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley
-			
+		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley			
 			@Override
 			public void handle(ActionEvent event) {
-				DIYComponentSelectorDialog dialog = new DIYComponentSelectorDialog(theComponentDatabase, that);
 				Optional<Component> result = dialog.view();
 				if (result.isPresent()) {
 					addComponent(result.get(), 1);
