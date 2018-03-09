@@ -1,8 +1,5 @@
 package View;
 
-import java.util.List;
-
-import Model.ComponentListItem;
 import Model.Component;
 import Model.ComponentDatabase;
 import Model.Project;
@@ -10,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
 public class DIYProjectPanel {
@@ -73,6 +71,11 @@ public class DIYProjectPanel {
 
         BorderPane border = new BorderPane();
         BorderPane bottomSplitter = new BorderPane();
+        
+        FlowPane inner = new FlowPane();
+        
+        border.setCenter(inner);
+        
         border.setBottom(bottomSplitter);
         bottomSplitter.setLeft(theAddButton);
         bottomSplitter.setRight(theRemoveButton);
