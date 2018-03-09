@@ -73,7 +73,7 @@ public class Component {
      * @param theSubComponents - LinkedList<ComponentListItem>
      */
     public Component(final int theID, final String theName, final BigDecimal theCost,
-    		final BigDecimal theCostPerMonth, final double theWidth, final double theLength,
+    		final BigDecimal theCostPerMonth, final double theLength, final double theWidth,
     		final double theHeight, final double theRadius, final double theWeight, final String theMaterial,
     		final double theManHrs, final BigDecimal theManHourCost,
     		final List<ComponentListItem> theSubComponents) {

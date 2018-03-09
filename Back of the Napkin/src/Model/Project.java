@@ -199,7 +199,7 @@ public class Project {
 	 * @param the Component to add
 	 * @param the Quantity of the component
 	 */
-	public void AddComponent(Component theComponent, int theQuantity) {
+	public void addComponent(Component theComponent, int theQuantity) {
 		ComponentListItem c = new ComponentListItem(theComponent, theQuantity);
 		myComponents.add(c);
 	}
@@ -207,18 +207,18 @@ public class Project {
 	/**
 	 * Removes a component entry from the component list,
 	 * if there is more than one instance of a component
-	 * (regardless of quantity) in the list, removes the first.
+	 * (regardless of quantity) in the list, removes all.
 	 * @author Eric Harty - hartye@uw.edu
-	 * 
+	 * @modified Keegan Wantz - wantzkt@uw.edu (remove by ID);
 	 * @param the Component to remove
 	 * @throws NoSuchElementException
 	 */
-	public void RemoveComponent(Component theComponent) {
-		ComponentListItem c = new ComponentListItem(theComponent, 1);
-		if(!myComponents.contains(c)){
-			throw new NoSuchElementException(); 
+	public void removeComponent(int theID) {
+		for (ComponentListItem c : myComponents) {
+			if (c.getComponent().getMyID() == theID) {
+				myComponents.remove(c);
+			}
 		}
-		myComponents.remove(c);
 	}
     
     

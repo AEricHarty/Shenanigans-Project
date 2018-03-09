@@ -84,7 +84,7 @@ public class ComponentDatabase {
 				BigDecimal costPerManHour = new BigDecimal(res.getString("CostPerManHour"));
 				
 				
-				Component toCache = new Component(ID, name, cost, monthlyCost, width, length, height,
+				Component toCache = new Component(ID, name, cost, monthlyCost, length, width, height,
 													radius, weight, material, manHours, costPerManHour, null);
 				
 
@@ -143,7 +143,7 @@ public class ComponentDatabase {
 					}
 				} else {		
 				
-					Component component = new Component(ID, name, cost, monthlyCost, width, length, height,
+					Component component = new Component(ID, name, cost, monthlyCost, length, width, height,
 														radius, weight, material, manHours, costPerManHour, null);
 					
 	
@@ -160,12 +160,15 @@ public class ComponentDatabase {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return output;
 	}
 	
-	
+	/**
+	 * Contains components for the cached components list.
+	 * 
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 *
+	 */
 	private class ComponentHolder {
 		private Component myComponent;
 		private boolean myIsDirty;

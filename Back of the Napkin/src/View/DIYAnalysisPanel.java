@@ -33,13 +33,11 @@ public class DIYAnalysisPanel {
 	
 	private GridPane myAnalysisPanel;
 	
-	public DIYAnalysisPanel(Project theProject) {
-		myHeader = new Label(theProject.getName());
-		myCostLabel = new Label(theProject.getTotalUpfrontCost().toString());
-		myCostPerMonthLabel = new Label(theProject.getCostPerMonth().toString());
-		myWeightLabel = new Label(theProject.getMiscCost().toString());
-		myManHoursLabel = new Label(theProject.getManHrs() + "");
-		myCostPerManHourLabel = new Label(theProject.getCostPerMonth().toString());
+	private Project myProject;
+	
+	public DIYAnalysisPanel(Project theProject) {		
+		myProject = theProject;
+		updateFields();
 		
 		myAnalysisPanel = buildAnalysisPanel();
 	}
@@ -68,6 +66,18 @@ public class DIYAnalysisPanel {
         		COST_PER_MAN_HOUR, myCostPerManHourLabel);
         
         return grid;
+	}
+	
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 */
+	public void updateFields() {
+		myHeader = new Label(myProject.getName());
+		myCostLabel = new Label(myProject.getTotalUpfrontCost().toString());
+		myCostPerMonthLabel = new Label(myProject.getCostPerMonth().toString());
+		myWeightLabel = new Label(myProject.getMiscCost().toString());
+		myManHoursLabel = new Label(myProject.getManHrs() + "");
+		myCostPerManHourLabel = new Label(myProject.getCostPerMonth().toString());
 	}
 	
 	public Label getHeader() {

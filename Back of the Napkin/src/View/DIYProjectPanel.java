@@ -23,22 +23,19 @@ public class DIYProjectPanel {
 	
 	private Button myRemoveComponentButton;
 	
-	private List<ComponentListItem> myComponentListItem;
-	
 	private Pane myProjectPanel;
 	
 	public DIYProjectPanel(final Project theProject, ComponentDatabase theComponentDatabase) {
 		myProject = theProject;
 		myAddComponentButton = createAddButton(theComponentDatabase);
 		myRemoveComponentButton = createRemoveButton();
-		myComponentListItem = theProject.getComponents();
 		
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 	}
 	
 	private Button createAddButton(ComponentDatabase theComponentDatabase) {
 		final Button addButton = new Button(ADD);
-		addButton.setLayoutX(0);
+		addButton.setLayoutX(100);
 		addButton.setLayoutY(650);
 		DIYProjectPanel that = this;
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -69,6 +66,7 @@ public class DIYProjectPanel {
 	
 	private Pane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
 		final Pane pane = new Pane();
+		
         pane.getChildren().add(theAddButton);
         pane.getChildren().add(theRemoveButton);
         pane.setStyle("-fx-background-color: #ffffff");
@@ -87,10 +85,6 @@ public class DIYProjectPanel {
 		return myRemoveComponentButton;
 	}
 	
-	public List<ComponentListItem> getComponentListItem() {
-		return myComponentListItem;
-	}
-	
 	public Pane getPanel() {
 		return myProjectPanel;
 	}
@@ -100,11 +94,11 @@ public class DIYProjectPanel {
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
-		myComponentListItem.add(new ComponentListItem(theComponent, theQuantity));
+		myProject.addComponent(theComponent, theQuantity);
 	}
 	
-	public void deleteComponent(final int theIndex) {
-		myComponentListItem.remove(theIndex);
+	public void deleteComponent(final int theID) {
+		myProject.removeComponent(theID);
 		
 	}
 }
