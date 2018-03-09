@@ -7,11 +7,27 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * The Menu bar.
+ * 
+ * @author Aaron Bardsley
+ * @modified Khoa Doan - khoadoan@uw.edu (move code to new class)
+ * @modified Keegan Wantz - wantzkt@uw.edu (added EventHandler for the About button)
+ * @version .75
+ */
 public class DIYMenu {
+	
+	/** The File menu. */
 	private final Menu myFileMenu;
 	
+	/** The Help menu. */
 	private final Menu myHelpMenu;
 	
+	/**
+     * Constructs the Menu bar.
+     * @author Aaron Bardsley
+     * @modified Keegan Wantz - wantzkt@uw.edu (added EventHandler for the About button)
+     */
 	public DIYMenu() {
 		myFileMenu = new Menu("File");
         myHelpMenu = new Menu("Help");
@@ -38,10 +54,18 @@ public class DIYMenu {
         });
 	}
 	
+	/**
+	 * @author Khoa Doan - khoadoan@uw.edu
+	 * @return the File menu
+	 */
 	public Menu getFileMenu() {
 		return myFileMenu;
 	}
 	
+	/**
+	 * @author Khoa Doan - khoadoan@uw.edu
+	 * @return the Help menu
+	 */
 	public Menu getHelpMenu() {
 		return myHelpMenu;
 	}
