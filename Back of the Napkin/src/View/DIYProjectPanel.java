@@ -46,18 +46,29 @@ public class DIYProjectPanel {
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 	}
 	
+	/**
+	 * @author Aaron Bardsley
+	 * @date 3/8/2018
+	 * 
+	 * @param theComponentDatabase the component database for populating the selection grid.
+	 * @return the 'add' Button
+	 * 
+	 * @details On action click opens the selector dialog. Dialog returns a Component and the button adds it to
+	 * the panel.
+	 */
 	private Button createAddButton(ComponentDatabase theComponentDatabase) {
-		final Button addButton = new Button(ADD);
-		//addButton.setLayoutX(100);
-		//addButton.setLayoutY(650);
-		DIYProjectPanel that = this;
-		addButton.setOnAction(new EventHandler<ActionEvent>() {
+		final Button addButton = new Button(ADD); //Khoa Doan
+		DIYProjectPanel that = this; //Khoa Doan
+		
+		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley
 			
 			@Override
 			public void handle(ActionEvent event) {
 				DIYComponentSelectorDialog dialog = new DIYComponentSelectorDialog(theComponentDatabase, that);
 				Optional<Component> result = dialog.view();
+				if (result.isPresent()) {
 					addComponent(result.get(), 1);
+				}
 			}
 		});
 		
