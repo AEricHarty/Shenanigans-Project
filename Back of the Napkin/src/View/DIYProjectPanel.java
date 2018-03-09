@@ -42,7 +42,7 @@ public class DIYProjectPanel {
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 		
 
-		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this); //Aaron Bardsley
+		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, myProject); //Aaron Bardsley (3/8/2018 11:58pm)
 	}
 	
 	/**
