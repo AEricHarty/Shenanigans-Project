@@ -8,15 +8,9 @@ import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public class DIYProjectPanel {
 	
@@ -48,7 +42,7 @@ public class DIYProjectPanel {
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 		
 
-		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this);
+		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this); //Aaron Bardsley
 	}
 	
 	/**
@@ -64,7 +58,7 @@ public class DIYProjectPanel {
 	private Button createAddButton(ComponentDatabase theComponentDatabase) {
 		final Button addButton = new Button(ADD); //Khoa Doan
 		
-		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley			
+		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley (start)
 			@Override
 			public void handle(ActionEvent event) {
 				Optional<Component> result = dialog.view();
@@ -72,9 +66,9 @@ public class DIYProjectPanel {
 					addComponent(result.get(), 1);
 				}
 			}
-		});
+		}); //Aaron Bardsley (end)
 		
-		return addButton;
+		return addButton; //Khoa Doan
 	}
 	
 	private Button createRemoveButton() {

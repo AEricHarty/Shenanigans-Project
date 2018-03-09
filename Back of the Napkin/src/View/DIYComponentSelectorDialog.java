@@ -40,7 +40,7 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 	 * @author Aaron Bardsley
 	 * @date 3/6/2018 10:08pm
 	 * 
-	 * @param theDB the ComponentDatabase singleton to use for _____ (@ToDo Aaron)
+	 * @param theDB the ComponentDatabase singleton to use for populating the grid.
 	 * 
 	 * Constructs the DIYComponentSelectorDialog.
 	 */
@@ -91,6 +91,7 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 		myComponentGrid.setGridLinesVisible(true);
 		myDialog.getDialogPane().setContent(myComponentGrid);
 		
+		// Associates each radio button with its respective Component (Aaron 3/8/2018 6:36pm)
 		mySelectGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
@@ -101,6 +102,7 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 			}			
 		});
 		
+		// Associates the 'OK' button with selected Component for returning from the dialog.
 		myDialog.setResultConverter(new Callback<ButtonType, Component>() {
 			@Override
 			public Component call(ButtonType b) {				
@@ -148,6 +150,8 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 	 * @date 3/8/2016 5:38pm
 	 * 
 	 * @return the Component returned by the dialog.
+	 * 
+	 * @details can be called more than once.
 	 */
 	public Optional<Component> view() {
 		return myDialog.showAndWait();
@@ -192,9 +196,9 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
      * 
      * Decrements the row stack pointer
      */
-    private void removeRowStack() {
-    	myOpenRow -= 1;
-    }
+//    private void removeRowStack() {
+//    	myOpenRow -= 1;
+//    }
     
 
 }
