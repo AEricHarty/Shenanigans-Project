@@ -123,6 +123,7 @@ public class ComponentDatabase {
 			while(res.next()) {
 				int ID = res.getInt("ID");
 				String name = res.getString("Name");
+
 				BigDecimal cost = new BigDecimal(res.getString("Cost"));
 				BigDecimal monthlyCost = new BigDecimal(res.getString("MonthlyCost"));
 				double length = res.getDouble("Length");

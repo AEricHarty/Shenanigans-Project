@@ -122,14 +122,14 @@ public class DIYProjectPanel {
 	private void buildExistingComponents() {
 		/* TEMPORARY */
 		addComponent(myComponentDatabase.getComponent(1), 1);
-		addComponent(myComponentDatabase.getComponent(2), 1);
-		addComponent(myComponentDatabase.getComponent(3), 1);
+		addComponent(myComponentDatabase.getComponent(2), 2);
+		addComponent(myComponentDatabase.getComponent(3), 4);
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
 		myProject.addComponent(theComponent, theQuantity);
 		DIYProjectComponent newComponentDisplay = new DIYProjectComponent(theComponent, theQuantity);
-	    myInnerPane.getChildren().add(newComponentDisplay);		
+	    myInnerPane.getChildren().add(newComponentDisplay);
 	}
 	
 	public void deleteComponent(final int theID) {
