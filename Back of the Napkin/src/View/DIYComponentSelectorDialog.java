@@ -5,8 +5,11 @@ import Model.Component;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 /**
  * 
@@ -18,14 +21,15 @@ import javafx.scene.layout.GridPane;
  * 
  * This class also calls the add new component button.
  */
-public class DIYComponentSelectorDialog {
+public class DIYComponentSelectorDialog extends Dialog<Component>{
 	
-	@SuppressWarnings("rawtypes") // I'm not sure what this is for (Aaron 3/6 9:58pm)
-	private Dialog myDialog;
+	//@SuppressWarnings("rawtypes") // Dialog supports Optional type. I'm not sure how to use this (Aaron 3/8/18 3:08pm)
+	private Dialog<Component> myDialog;
 	private GridPane myComponentGrid;
-	private ComponentDatabase myComponentDB;
-	private DIYProjectPanel myProjectPanel;
-	private int myOpenRow;
+	private ComponentDatabase myDB;
+	private DIYProjectPanel myProjectPanel; 
+	private int myOpenRow; //stack pointer
+	private ToggleGroup selectGroup;
 	
 	/**
 	 * @author Aaron Bardsley
@@ -35,17 +39,20 @@ public class DIYComponentSelectorDialog {
 	 * 
 	 * Constructs the DIYComponentSelectorDialog.
 	 */
-	@SuppressWarnings("rawtypes") // I'm not sure what this is for (Aaron 3/6 9:58pm)
+	//@SuppressWarnings("rawtypes") // Dialog supports Optional type. I'm not sure how to use this (Aaron 3/8/18 3:08pm)
 	public DIYComponentSelectorDialog(ComponentDatabase theDB, DIYProjectPanel theProjectPanel) {
-		myComponentDB = theDB;
+		myDB = theDB;
 		myProjectPanel = theProjectPanel;
-		myDialog = new Dialog();
+		myDialog = new Dialog<Component>();
 		myComponentGrid = new GridPane();
 		myOpenRow = 1; //Keeps track of the open row like a stack pointer (Aaron 3/6 9:58pm)
+		selectGroup = new ToggleGroup();
+		
 		
 		initDialog();
 	}
 	
+
 	/**
 	 * @author Aaron Bardsley
 	 * @date 3/6/2018 10:08pm
@@ -58,24 +65,28 @@ public class DIYComponentSelectorDialog {
 		myDialog.setHeaderText("Temporary select component text.");
 		myDialog.setResizable(false);
 		
-		myComponentGrid.add(makeLabel("Name"), 1, myOpenRow);
-		myComponentGrid.add(makeLabel("Initial Cost"), 2, myOpenRow);
-		myComponentGrid.add(makeLabel("Monthly Cost"), 3, myOpenRow);
-		myComponentGrid.add(makeLabel("Width"), 4, myOpenRow);
+		myComponentGrid.add(makeLabel("Choose Component"), 1, myOpenRow);
+		myComponentGrid.add(makeLabel("Name"), 2, myOpenRow);
+		myComponentGrid.add(makeLabel("Initial Cost"), 3, myOpenRow);
+		myComponentGrid.add(makeLabel("Monthly Cost"), 4, myOpenRow);
 		myComponentGrid.add(makeLabel("Length"), 5, myOpenRow);
-		myComponentGrid.add(makeLabel("Height"), 6, myOpenRow);
-		myComponentGrid.add(makeLabel("Radius"), 7, myOpenRow);
-		myComponentGrid.add(makeLabel("Weight"), 8, myOpenRow);
-		myComponentGrid.add(makeLabel("Material"), 9, myOpenRow);
-		myComponentGrid.add(makeLabel("Man-hours"), 10, myOpenRow);
-		myComponentGrid.add(makeLabel("Cost Per Man-hour"), 11, myOpenRow);
-		myComponentGrid.add(makeLabel("# of Subcomponents"), 12, myOpenRow);
+		myComponentGrid.add(makeLabel("Width"), 6, myOpenRow);
+		myComponentGrid.add(makeLabel("Height"), 7, myOpenRow);
+		myComponentGrid.add(makeLabel("Radius"), 8, myOpenRow);
+		myComponentGrid.add(makeLabel("Weight"), 9, myOpenRow);
+		myComponentGrid.add(makeLabel("Material"), 10, myOpenRow);
+		myComponentGrid.add(makeLabel("Man-hours"), 11, myOpenRow);
+		myComponentGrid.add(makeLabel("Cost Per Man-hour"), 12, myOpenRow);
+		myComponentGrid.add(makeLabel("# of Subcomponents"), 13, myOpenRow);
+		
+		populateFromDB();
 
 		ButtonType okButton = new ButtonType("Ok", ButtonData.OK_DONE);
 		myDialog.getDialogPane().getButtonTypes().add(okButton);
 		
 		myComponentGrid.setGridLinesVisible(true);
 		myDialog.getDialogPane().setContent(myComponentGrid);
+		
 		
 	}
 	
@@ -88,20 +99,36 @@ public class DIYComponentSelectorDialog {
 	 */
 	public void addComponent(Component theComponent) {
 		addRowStack();
+
+		ToggleButton componentSelect = new ToggleButton();
+		componentSelect.setToggleGroup(selectGroup);
 		
-		myComponentGrid.add(makeLabel(theComponent.getName()), 1, myOpenRow);
-		myComponentGrid.add(makeLabel(theComponent.getCost().toString()), 2, myOpenRow);
-		myComponentGrid.add(makeLabel(theComponent.getCostPerMonth().toString()), 3, myOpenRow);
-		myComponentGrid.add(makeLabel(Double.toString(theComponent.getWidth())), 4, myOpenRow);
+		myComponentGrid.add(componentSelect, 1, myOpenRow);
+		myComponentGrid.add(makeLabel(theComponent.getName()), 2, myOpenRow);
+		myComponentGrid.add(makeLabel(theComponent.getCost().toString()), 3, myOpenRow);
+		myComponentGrid.add(makeLabel(theComponent.getCostPerMonth().toString()), 4, myOpenRow);
 		myComponentGrid.add(makeLabel(Double.toString(theComponent.getLength())), 5, myOpenRow);
-		myComponentGrid.add(makeLabel(Double.toString(theComponent.getHeight())), 6, myOpenRow);
-		myComponentGrid.add(makeLabel(Double.toString(theComponent.getMyRadius())), 7, myOpenRow);
-		myComponentGrid.add(makeLabel(Double.toString(theComponent.getWeight())), 8, myOpenRow);
-		myComponentGrid.add(makeLabel(theComponent.getMaterial()), 9, myOpenRow);
-		myComponentGrid.add(makeLabel(Double.toString(theComponent.getManHrs())), 10, myOpenRow);
-		myComponentGrid.add(makeLabel(theComponent.getCostPerManHr().toString()), 11, myOpenRow);
-		myComponentGrid.add(makeLabel(Integer.toString(theComponent.getSubComponents().size())), 12, myOpenRow);
+		myComponentGrid.add(makeLabel(Double.toString(theComponent.getWidth())), 6, myOpenRow);
+		myComponentGrid.add(makeLabel(Double.toString(theComponent.getHeight())), 7, myOpenRow);
+		myComponentGrid.add(makeLabel(Double.toString(theComponent.getMyRadius())), 8, myOpenRow);
+		myComponentGrid.add(makeLabel(Double.toString(theComponent.getWeight())), 9, myOpenRow);
+		myComponentGrid.add(makeLabel(theComponent.getMaterial()), 10, myOpenRow);
+		myComponentGrid.add(makeLabel(Double.toString(theComponent.getManHrs())), 11, myOpenRow);
+		myComponentGrid.add(makeLabel(theComponent.getCostPerManHr().toString()), 12, myOpenRow);
+		myComponentGrid.add(makeLabel(Integer.toString(theComponent.getSubComponents().size())), 13, myOpenRow);
 		
+	}
+	
+	/**
+	 * @author Aaron Bardsley
+	 * @date 3/8/2018 4:08pm
+	 * 
+	 * @details initializes components from database. Only used by constructor.
+	 */
+	private void populateFromDB() {
+		for (Component component : myDB.getAllComponents()) {
+			addComponent(component);
+		}
 	}
 	
 	/**
@@ -122,8 +149,7 @@ public class DIYComponentSelectorDialog {
 	 * @return Label created with the input name
 	 */
     private Label makeLabel(String name) {
-    	Label label = new Label("  " + name + "  ");
-		return label;
+		return new Label("  " + name + "  ");
     }
     
     /**
