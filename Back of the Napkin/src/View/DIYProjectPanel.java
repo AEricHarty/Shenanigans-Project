@@ -6,9 +6,15 @@ import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class DIYProjectPanel {
 	
@@ -22,10 +28,16 @@ public class DIYProjectPanel {
 	
 	private Button myRemoveComponentButton;
 	
-	private Pane myProjectPanel;
+	private BorderPane myProjectPanel;
+	
+	private FlowPane myInnerPane;
+	
+	private ComponentDatabase myComponentDatabase;
 	
 	public DIYProjectPanel(final Project theProject, ComponentDatabase theComponentDatabase) {
 		myProject = theProject;
+		myComponentDatabase = theComponentDatabase;
+		
 		myAddComponentButton = createAddButton(theComponentDatabase);
 		myRemoveComponentButton = createRemoveButton();
 		
@@ -66,7 +78,7 @@ public class DIYProjectPanel {
 	/**
 	 * @author Keegan Wantz - wantzkt@uw.edu
 	 */
-	private Pane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
+	private BorderPane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
 		//final Pane pane = new Pane();
 
         BorderPane border = new BorderPane();
@@ -74,11 +86,18 @@ public class DIYProjectPanel {
         
         FlowPane inner = new FlowPane();
         
+        myInnerPane = inner;
+        
+        inner.setHgap(2);
+       
+        
         border.setCenter(inner);
         
         border.setBottom(bottomSplitter);
         bottomSplitter.setLeft(theAddButton);
         bottomSplitter.setRight(theRemoveButton);
+        
+        buildExistingComponents();
         
         border.setStyle("-fx-background-color: #ffffff");
         return border;
@@ -101,11 +120,16 @@ public class DIYProjectPanel {
 	}
 	
 	private void buildExistingComponents() {
-		
+		/* TEMPORARY */
+		addComponent(myComponentDatabase.getComponent(1), 1);
+		addComponent(myComponentDatabase.getComponent(2), 1);
+		addComponent(myComponentDatabase.getComponent(3), 1);
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
 		myProject.addComponent(theComponent, theQuantity);
+		DIYProjectComponent newComponentDisplay = new DIYProjectComponent(theComponent, theQuantity);
+	    myInnerPane.getChildren().add(newComponentDisplay);		
 	}
 	
 	public void deleteComponent(final int theID) {
