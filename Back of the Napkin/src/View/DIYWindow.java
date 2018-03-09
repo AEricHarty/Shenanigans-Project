@@ -80,7 +80,10 @@ public class DIYWindow extends Application {
         
         Scene sceneMain = new Scene(border);
         primaryStage.setScene(sceneMain);
+        primaryStage.setResizable(false); // Automatically adjusts size
         primaryStage.sizeToScene(); // Dynamic window size (Aaron 3/9/2018 12:36am)
+        primaryStage.setMinHeight(primaryStage.getHeight());
+        primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.show();
     }
 }
