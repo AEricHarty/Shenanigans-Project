@@ -29,14 +29,12 @@ import javafx.util.Callback;
  */
 public class DIYComponentSelectorDialog extends Dialog<Component> {
 	
-	//@SuppressWarnings("rawtypes") // Dialog supports Optional type. I'm not sure how to use this (Aaron 3/8/18 3:08pm)
 	private Dialog<Component> myDialog;
 	private GridPane myComponentGrid;
 	private ComponentDatabase myDB;
-	private DIYProjectPanel myProjectPanel; 
 	private int myOpenRow; //stack pointer
 	private ToggleGroup mySelectGroup;
-	private Component myReturnComponent;
+	private Component myReturnComponent; //returned by this dialog to the add component button.
 	
 	/**
 	 * @author Aaron Bardsley
@@ -46,10 +44,8 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 	 * 
 	 * Constructs the DIYComponentSelectorDialog.
 	 */
-	//@SuppressWarnings("rawtypes") // Dialog supports Optional type. I'm not sure how to use this (Aaron 3/8/18 3:08pm)
 	public DIYComponentSelectorDialog(ComponentDatabase theDB, DIYProjectPanel theProjectPanel) {
 		myDB = theDB;
-		myProjectPanel = theProjectPanel;
 		myDialog = new Dialog<Component>();
 		myComponentGrid = new GridPane();
 		myOpenRow = 1; //Keeps track of the open row like a stack pointer (Aaron 3/6 9:58pm)
@@ -96,7 +92,6 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 		myDialog.getDialogPane().setContent(myComponentGrid);
 		
 		mySelectGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
 				if (mySelectGroup.getSelectedToggle() != null
@@ -107,17 +102,13 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 		});
 		
 		myDialog.setResultConverter(new Callback<ButtonType, Component>() {
-
 			@Override
-			public Component call(ButtonType b) {
-				
+			public Component call(ButtonType b) {				
 				if (b == okButton) {
 					return myReturnComponent;
-				}
-				
+				}				
 				return null;
-			}
-			
+			}			
 		});
 		
 	}
@@ -152,6 +143,12 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 		
 	}
 	
+	/**
+	 * @author Aaron Bardsleu
+	 * @date 3/8/2016 5:38pm
+	 * 
+	 * @return the Component returned by the dialog.
+	 */
 	public Optional<Component> view() {
 		return myDialog.showAndWait();
 	}
