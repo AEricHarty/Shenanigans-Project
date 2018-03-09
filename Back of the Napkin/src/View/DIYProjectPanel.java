@@ -65,6 +65,9 @@ public class DIYProjectPanel {
 		return removeButton;
 	}
 	
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 */
 	private Pane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
 		//final Pane pane = new Pane();
 
@@ -73,8 +76,6 @@ public class DIYProjectPanel {
         border.setBottom(bottomSplitter);
         bottomSplitter.setLeft(theAddButton);
         bottomSplitter.setRight(theRemoveButton);
-        //pane.getChildren().add(theAddButton);
-        //pane.getChildren().add(theRemoveButton);
         
         border.setStyle("-fx-background-color: #ffffff");
         return border;
