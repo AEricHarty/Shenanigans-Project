@@ -1,5 +1,7 @@
 package View;
 
+import java.util.Optional;
+
 import Model.Component;
 import Model.ComponentDatabase;
 import Model.Project;
@@ -53,7 +55,9 @@ public class DIYProjectPanel {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				new DIYComponentSelectorDialog(theComponentDatabase, that).view();
+				DIYComponentSelectorDialog dialog = new DIYComponentSelectorDialog(theComponentDatabase, that);
+				Optional<Component> result = dialog.view();
+					addComponent(result.get(), 1);
 			}
 		});
 		
@@ -122,14 +126,14 @@ public class DIYProjectPanel {
 	private void buildExistingComponents() {
 		/* TEMPORARY */
 		addComponent(myComponentDatabase.getComponent(1), 1);
-		addComponent(myComponentDatabase.getComponent(2), 2);
-		addComponent(myComponentDatabase.getComponent(3), 4);
+		addComponent(myComponentDatabase.getComponent(2), 1);
+		addComponent(myComponentDatabase.getComponent(3), 1);
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
 		myProject.addComponent(theComponent, theQuantity);
 		DIYProjectComponent newComponentDisplay = new DIYProjectComponent(theComponent, theQuantity);
-	    myInnerPane.getChildren().add(newComponentDisplay);
+	    myInnerPane.getChildren().add(newComponentDisplay);		
 	}
 	
 	public void deleteComponent(final int theID) {

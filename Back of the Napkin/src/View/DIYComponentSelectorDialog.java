@@ -152,6 +152,10 @@ public class DIYComponentSelectorDialog extends Dialog<Component> {
 		
 	}
 	
+	public Optional<Component> view() {
+		return myDialog.showAndWait();
+	}
+	
 	/**
 	 * @author Aaron Bardsley
 	 * @date 3/8/2018 4:08pm
