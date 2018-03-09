@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * The Side Panel.
@@ -19,13 +20,16 @@ public class DIYSidePanel {
 	/** The Side panel. */
 	private GridPane mySidePanel;
 	
+	private Stage myStage; //invoke myStage.sizeToScene() after an update (Aaron 3/9/2018 12:30am)
+	
 	/**
      * Constructs a Side Panel with the specified list of projects.
      * @author Khoa Doan - khoadoan@uw.edu
      * 
      * @param theProjectList list of DIY projects
      */
-	public DIYSidePanel(final List<Project> theProjectList) {
+	public DIYSidePanel(final Stage theStage, final List<Project> theProjectList) {
+		myStage = theStage;
 		mySidePanel = buildSidePanel(theProjectList);
 	}
 	

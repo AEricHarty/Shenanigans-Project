@@ -7,16 +7,18 @@ import Model.ComponentDatabase;
 import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class DIYProjectPanel {
 	
-	private static final String ADD = "Add";
+	private static final String ADD = "Add Component";
 	
-	private static final String REMOVE = "Remove";
+	private static final String REMOVE = "Remove Component";
 	
 	private Project myProject;
 	
@@ -32,7 +34,10 @@ public class DIYProjectPanel {
 	
 	private DIYComponentSelectorDialog dialog;
 	
-	public DIYProjectPanel(final Project theProject, ComponentDatabase theComponentDatabase) {
+	private Stage myStage; //invoke myStage.sizeToScene() after an update (Aaron 3/9/2018 12:30am)
+	
+	public DIYProjectPanel(final Stage theStage, final Project theProject, ComponentDatabase theComponentDatabase) {
+		myStage = theStage;
 		myProject = theProject;
 		myComponentDatabase = theComponentDatabase;
 		
@@ -64,6 +69,7 @@ public class DIYProjectPanel {
 				Optional<Component> result = dialog.view();
 				if (result.isPresent()) {
 					addComponent(result.get(), 1);
+					myStage.sizeToScene();
 				}
 			}
 		}); //Aaron Bardsley (end)
@@ -80,6 +86,7 @@ public class DIYProjectPanel {
 			@Override
 			public void handle(ActionEvent event) {
 				
+				myStage.sizeToScene();
 			}
 		});
 		
@@ -94,6 +101,9 @@ public class DIYProjectPanel {
 
         BorderPane border = new BorderPane();
         BorderPane bottomSplitter = new BorderPane();
+        
+        border.setPadding(new Insets(5, 5, 5, 5)); //aesthetics (Aaron 3/9/2018 12:35am)
+        bottomSplitter.setPadding(new Insets(5, 0, 0, 0)); //aesthetics (Aaron 3/9/2018 12:35am)
         
         FlowPane inner = new FlowPane();
         

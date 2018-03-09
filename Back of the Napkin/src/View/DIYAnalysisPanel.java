@@ -4,6 +4,7 @@ import Model.Project;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  * The Analysis Panel.
@@ -56,6 +57,8 @@ public class DIYAnalysisPanel {
 	/** The project. */
 	private Project myProject;
 	
+	private Stage myStage; //invoke myStage.sizeToScene() after an update (Aaron 3/9/2018 12:30am)
+	
 	/**
      * Constructs an Analysis Panel with the specified project.
      * @author Khoa Doan - khoadoan@uw.edu
@@ -63,7 +66,8 @@ public class DIYAnalysisPanel {
      * 
      * @param theProject
      */
-	public DIYAnalysisPanel(Project theProject) {		
+	public DIYAnalysisPanel(final Stage theStage, Project theProject) {		
+		myStage = theStage;
 		myProject = theProject;
 		updateFields();
 		
@@ -112,6 +116,8 @@ public class DIYAnalysisPanel {
 		myWeightLabel = new Label(myProject.getMiscCost().toString());
 		myManHoursLabel = new Label(myProject.getManHrs() + "");
 		myCostPerManHourLabel = new Label(myProject.getCostPerMonth().toString());
+		
+		myStage.sizeToScene();
 	}
 	
 	/**

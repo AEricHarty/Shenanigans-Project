@@ -67,20 +67,20 @@ public class DIYWindow extends Application {
         border.setTop(menuBar);
         
         // Analysis Panel (right)
-        final DIYAnalysisPanel analysisPanel = new DIYAnalysisPanel(project);
+        final DIYAnalysisPanel analysisPanel = new DIYAnalysisPanel(primaryStage, project);
         border.setRight(analysisPanel.getPanel());
         
         // Side Panel (left)
-        final DIYSidePanel sidePanel = new DIYSidePanel(list);
+        final DIYSidePanel sidePanel = new DIYSidePanel(primaryStage, list);
         border.setLeft(sidePanel.getPanel());
         
         // Project Panel (center)
-        final DIYProjectPanel projectPanel = new DIYProjectPanel(project, myComponentDatabase);
+        final DIYProjectPanel projectPanel = new DIYProjectPanel(primaryStage, project, myComponentDatabase);
         border.setCenter(projectPanel.getPanel());
         
-        
-        Scene sceneMain = new Scene(border, 1280,720);
+        Scene sceneMain = new Scene(border);
         primaryStage.setScene(sceneMain);
+        primaryStage.sizeToScene(); // Dynamic window size (Aaron 3/9/2018 12:36am)
         primaryStage.show();
     }
 }
