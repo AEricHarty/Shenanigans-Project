@@ -1,5 +1,13 @@
 package Model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -10,7 +18,10 @@ import java.util.NoSuchElementException;
  * @author Eric Harty hartye@uw.edu
  * @version .75
  */
-public class Project {
+public class Project implements Serializable {
+
+	/**Generated VersionID - 3/10- EH*/
+	private static final long serialVersionUID = 9074716694653347193L;
 
 	/**The name of this Project.*/
     private String myName;
@@ -24,11 +35,11 @@ public class Project {
     /**The current cost per kWh of energy used.*/
     private BigDecimal myPowerCost;
 
-	/**The list of DIYcomponents.*/
+	/**The list of Components.*/
     public LinkedList<ComponentListItem> myComponents;
     
     /**
-     * Constructs a DIYProject with a default name and empty fields.
+     * Constructs a Project with a default name and empty fields.
      * @author Eric Harty - hartye@uw.edu
      * 
      */
@@ -38,6 +49,33 @@ public class Project {
 		myPowerCost = new BigDecimal(0);
 		myManHrs = 0;
 		myComponents = new LinkedList<ComponentListItem>();
+	}
+    
+    /**
+     * Overloaded constructor for loading files.
+     * @author Eric Harty - hartye@uw.edu
+     * 
+     */
+    public Project(File theFile) {
+    	Project temp = null;
+    	try {
+            FileInputStream fi = new FileInputStream(theFile);
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            temp = (Project) oi.readObject();        
+            oi.close();
+            fi.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    	myName = temp.getName();
+		myMiscCost = temp.getMiscCost();
+		myPowerCost = temp.getPowerCost();
+		myManHrs = temp.getManHrs();
+		myComponents = temp.getComponents();
 	}
 
 	/**
@@ -219,6 +257,25 @@ public class Project {
 				myComponents.remove(c);
 			}
 		}
+	}
+	
+	/**
+	 * Saves the project as name.txt in the same folder as the jar.
+	 * @author Eric Harty - hartye@uw.edu
+	 * 
+	 */
+	public void saveProject() {
+        try {
+			FileOutputStream f = new FileOutputStream(new File(myName + ".txt"));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(this);
+            o.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("Error initializing stream");
+        }
 	}
     
     
