@@ -69,7 +69,7 @@ public class Project implements Serializable {
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        	System.out.println("Incorrect file type");
         }
     	myName = temp.getName();
 		myMiscCost = temp.getMiscCost();
