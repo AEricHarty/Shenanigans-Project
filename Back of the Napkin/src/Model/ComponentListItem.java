@@ -7,7 +7,7 @@ package Model;
  * @version .75
  */
 public class ComponentListItem {
-	
+
 	/**The component.*/
     private final Component myComponent;
 
@@ -99,6 +99,16 @@ public class ComponentListItem {
 			return false;
 		}
 		return true;
+	}
+	
+	/** 
+	 * @author Eric Harty - hartye@uw.edu
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ComponentListItem [myComponent=" + myComponent.getName() + "]";
 	}
 	
 	

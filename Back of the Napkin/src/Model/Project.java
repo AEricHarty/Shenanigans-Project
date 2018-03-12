@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
  */
 public class Project implements Serializable {
 
-	/**Generated VersionID - 3/10- EH*/
+	/**Generated VersionID - 3/12- EH*/
 	private static final long serialVersionUID = 9074716694653347193L;
 
 	/**The name of this Project.*/
@@ -122,6 +122,8 @@ public class Project implements Serializable {
 	 * Calculates and returns the total energy cost in kWh for this project.
 	 * @author Eric Harty - hartye@uw.edu
 	 * 
+	 *  folded in to monthly cost in components
+	 * 
 	 * @return the total energy consumption
 	 */
 	/*public double getTotalEnergy() {
@@ -138,12 +140,14 @@ public class Project implements Serializable {
 	 * Calculates and returns the total energy cost in kWh for this project.
 	 * @author Eric Harty - hartye@uw.edu
 	 * 
+	 * folded in to monthly cost in components
+	 * 
 	 * @return the cost to power this project
 	 */
 	/*public BigDecimal getTotalPowerCost() {
 		BigDecimal total = myPowerCost;
 		BigDecimal use = new BigDecimal(this.getTotalEnergy());
-		total.multiply(use);
+		total = total.multiply(use);
 		return total;
 	}*/
 
@@ -159,7 +163,7 @@ public class Project implements Serializable {
         	BigDecimal subt = c.getComponent().getCostPerMonth();
         	BigDecimal q = new BigDecimal(c.getQuantity());
         	subt = subt.multiply(q);
-        	total.add(subt);
+        	total = total.add(subt);
         }
 		return total;
 	}
@@ -176,7 +180,7 @@ public class Project implements Serializable {
         	BigDecimal subt = c.getComponent().getCost();
         	BigDecimal q = new BigDecimal(c.getQuantity());
         	subt = subt.multiply(q);
-        	total.add(subt);
+        	total = total.add(subt);
         }
 		return total;
 	}

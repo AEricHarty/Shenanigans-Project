@@ -223,7 +223,7 @@ public class Component {
         	BigDecimal subt = c.getComponent().getCostPerMonth();
         	BigDecimal q = new BigDecimal(c.getQuantity());
         	subt = subt.multiply(q);
-        	total.add(subt);
+        	total = total.add(subt);
         }
     	return total;
     }
