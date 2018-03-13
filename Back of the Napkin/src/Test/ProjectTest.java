@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.LinkedList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,26 +20,30 @@ import Model.Project;
  */
 class ProjectTest {
 	
-	private static final BigDecimal COST = new BigDecimal(5);
-	private static final BigDecimal CPM = new BigDecimal(7);
+	private static final BigDecimal COST = new BigDecimal("5.15");
+	private static final BigDecimal CPM = new BigDecimal("7.50");
     private Project myProject;
     private final String myName = "Test Name";
-    private final BigDecimal myMiscCost = new BigDecimal(8);
+    private final BigDecimal myMiscCost = new BigDecimal("8.80");
     private final double myManHrs = 4.5;
-    private final BigDecimal myPowerCost = new BigDecimal(10);
+    private final BigDecimal myPowerCost = new BigDecimal("10.00");
     
-    private final Component comp = new Component(2, myName + "2", COST, CPM,
+    private final Component comp = new Component(2, myName, COST, CPM,
 			myManHrs, myManHrs, myManHrs, myManHrs, myManHrs, myName,
 			myManHrs, myMiscCost, null);
     private final ComponentListItem item = new ComponentListItem(comp, 2);
-    //Cost 10.00, cpm 14.00/m, mhrs 9
     
-    private final Component comp2 = new Component(3, myName + "3", COST, CPM,
+    private final Component comp2 = new Component(3, myName, COST, CPM,
 			myManHrs, myManHrs, myManHrs, myManHrs, myManHrs, myName,
 			myManHrs, myMiscCost, null);
     private final ComponentListItem item2 = new ComponentListItem(comp2, 4);
-    //Cost 20.00, cpm 28.00/m, mhrs 18
     
+    private final Component subComp = new Component(3, myName, COST, CPM,
+			myManHrs, myManHrs, myManHrs, myManHrs, myManHrs, myName,
+			myManHrs, myMiscCost, null);
+    private final ComponentListItem subItem = new ComponentListItem(subComp, 5);
+    private final LinkedList<ComponentListItem> subList = new LinkedList<ComponentListItem>();
+
     
 	/**
 	 * @author Eric Harty - hartye@uw.edu
@@ -54,18 +59,28 @@ class ProjectTest {
 		myProject.setManHrs(myManHrs);
 	}
 	
-	/**@author Eric Harty - hartye@uw.edu*/
+	/**
+	 * Tests the getters that do calculations in Project and Component classes
+	 * @author Eric Harty - hartye@uw.edu
+	 */
 	@Test
 	void testTotals() {
 		myProject.addComponent(comp, 2);
 		myProject.addComponent(comp2, 4);
 		
-		BigDecimal upfront = new BigDecimal(38);
-		BigDecimal month = new BigDecimal(42);
+		subList.add(subItem);
+		Component comp3 = new Component(3, myName, COST, CPM,
+					myManHrs, myManHrs, myManHrs, myManHrs, myManHrs, myName,
+					myManHrs, myMiscCost, subList);
+		
+		myProject.addComponent(comp3, 1);
+		
+		BigDecimal upfront = new BigDecimal("44.85");
+		BigDecimal month = new BigDecimal("90.00");
 
 		assertEquals(myProject.getTotalUpfrontCost(), upfront);
 		assertEquals(myProject.getCostPerMonth(), month);
-		assertEquals(myProject.getTotalManHrs(), 31.5);
+		assertEquals(myProject.getTotalManHrs(), 58.5);
 	}
 
 	/**@author Eric Harty - hartye@uw.edu*/
@@ -92,10 +107,8 @@ class ProjectTest {
 	/**@author Eric Harty - hartye@uw.edu*/
 	@Test
 	void testSaveLoad() {
-		File path = new File(myName + ".txt");
-		
+		File path = new File(myName + ".txt");	
 		myProject.saveProject();
-
 		Project copy = new Project(path);
 		
 		assertEquals(myProject.getName(), copy.getName());
