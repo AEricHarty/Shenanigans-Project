@@ -4,6 +4,7 @@ import java.util.List;
 
 import Model.Project;
 import javafx.geometry.Insets;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
@@ -26,11 +27,11 @@ public class DIYSidePanel {
      * Constructs a Side Panel with the specified list of projects.
      * @author Khoa Doan - khoadoan@uw.edu
      * 
-     * @param theProjectList list of DIY projects
+     * @param list list of DIY projects
      */
-	public DIYSidePanel(final Stage theStage, final List<Project> theProjectList) {
+	public DIYSidePanel(final Stage theStage, final List<Project> list) {
 		myStage = theStage;
-		mySidePanel = buildSidePanel(theProjectList);
+		mySidePanel = buildSidePanel(list);
 	}
 	
 	/**

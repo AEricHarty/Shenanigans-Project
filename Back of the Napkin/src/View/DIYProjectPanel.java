@@ -49,7 +49,9 @@ public class DIYProjectPanel {
 
 		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, myProject); //Aaron Bardsley (3/8/2018 11:58pm)
 	}
+
 	
+
 	/**
 	 * @author Aaron Bardsley
 	 * @date 3/8/2018
@@ -153,6 +155,7 @@ public class DIYProjectPanel {
 	    myInnerPane.getChildren().add(newComponentDisplay);		
 	}
 	
+	//public void setComponentDatabases(final Component the)
 	public void deleteComponent(final int theID) {
 		myProject.removeComponent(theID);
 		
