@@ -50,7 +50,7 @@ public class Component {
     private final BigDecimal myCostPerManHr;
     
     /**The list of subcomponents.*/
-    public final List<ComponentListItem> mySubComponents;
+    private final List<ComponentListItem> mySubComponents;
     
     
     
