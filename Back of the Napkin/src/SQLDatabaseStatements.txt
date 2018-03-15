@@ -1,0 +1,29 @@
+CREATE TABLE Properties (
+    ID          INTEGER      PRIMARY KEY AUTOINCREMENT,
+    CID         INTEGER      REFERENCES Components (ID),
+    Name        STRING (50),
+    Description STRING (300),
+    Value       DOUBLE
+);
+
+CREATE TABLE SubComponents (
+    MainID INTEGER REFERENCES Components (ID),
+    SubID  INTEGER REFERENCES Components (ID) 
+                   CONSTRAINT RecursionPrevention CHECK (MainID != SubID) 
+);
+
+
+CREATE TABLE Components (
+    ID                INTEGER     PRIMARY KEY AUTOINCREMENT,
+    Name              STRING (50) NOT NULL,
+    Cost              STRING,
+    MonthlyCost       STRING,
+    Length            DOUBLE,
+    Width             DOUBLE,
+    Height            DOUBLE,
+    Radius            DOUBLE,
+    Weight            DOUBLE,
+    Material          STRING,
+    EstimatedManHours DOUBLE,
+    CostPerManHour    STRING
+);

@@ -28,7 +28,7 @@ public class DIYWindow extends Application {
 	static int numOfProjects = 4;
 	ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
 	ListView<Project> projectListView = new ListView<Project>();
-	List<ComponentDatabase> myComponentDatabases;
+	ComponentDatabase myComponentDatabase;
 	
 	/**
 	 * @author Keegan Wantz - wantzkt@uw.edu
@@ -36,25 +36,24 @@ public class DIYWindow extends Application {
 	 * Constructs a DIY Window and connects to the component database. If it fails to connect, then the application cannot run.
 	 **/
 	public DIYWindow() {
-		myComponentDatabases = new LinkedList<>();
-		for (int i = 0; i < numOfProjects; i++) {
-	    	myComponentDatabases.add(new ComponentDatabase());
-	    	if (myComponentDatabases.get(i).connect() != 1) {
-				Alert information = new Alert(AlertType.INFORMATION);
-				information.setTitle("Failed to Open Database");
-				information.setHeaderText("Failed to open the database.");
-				information.setContentText("Closing application.");
-				information.showAndWait();
-		    	Platform.exit();
-	    	} else {
-	    		System.out.println("Database test:");
-	    		List<Component> cList = myComponentDatabases.get(i).getAllComponents();
-	    		for (Component c : cList) {
-	    			System.out.println(c.getMyID() + ", " + c.getName() + ", " + c.getCost() + ", " + c.getCostPerMonth());
-	    		}
-	    		
-	    	}
-		}
+    	myComponentDatabase = new ComponentDatabase();
+    	
+    	if (myComponentDatabase.connect() != 1) {
+			Alert information = new Alert(AlertType.INFORMATION);
+			information.setTitle("Failed to Open Database");
+			information.setHeaderText("Failed to open the database.");
+			information.setContentText("Closing application.");
+			information.showAndWait();
+	    	Platform.exit();
+    	} else {
+    		System.out.println("Database test:");
+    		List<Component> cList = myComponentDatabase.getAllComponents();
+    		for (Component c : cList) {
+    			System.out.println(c.getMyID() + ", " + c.getName() + ", " + c.getCost() + ", " + c.getCostPerMonth());
+    		}
+    		
+    	}
+		
 	}
 	
     public static void main(String[] args) {
@@ -114,7 +113,7 @@ public class DIYWindow extends Application {
         int j;
         final List<DIYProjectPanel> projectPanels = new LinkedList<>();
         for (j = 0; j < numOfProjects; j++) {
-        	projectPanels.add(new DIYProjectPanel(primaryStage, list.get(j), myComponentDatabases.get(j)));
+        	projectPanels.add(new DIYProjectPanel(primaryStage, list.get(j), myComponentDatabase));
         }
         border.setCenter(projectPanels.get(0).getPanel());   
         
@@ -142,7 +141,7 @@ public class DIYWindow extends Application {
         Scene sceneMain = new Scene(border);
         primaryStage.setScene(sceneMain);
         
-        primaryStage.setResizable(false); // Automatically adjust size (Aaron 3/9/2018 1:18am)
+        //primaryStage.setResizable(false); // Automatically adjust size (Aaron 3/9/2018 1:18am)
         primaryStage.sizeToScene(); // Dynamic window size (Aaron 3/9/2018 12:36am)
         
         primaryStage.show();

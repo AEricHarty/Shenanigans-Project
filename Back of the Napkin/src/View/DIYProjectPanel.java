@@ -1,9 +1,11 @@
 package View;
 
+import java.util.List;
 import java.util.Optional;
 
 import Model.Component;
 import Model.ComponentDatabase;
+import Model.ComponentListItem;
 import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -142,11 +144,20 @@ public class DIYProjectPanel {
 		return myProjectPanel;
 	}
 	
+	/*
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 */
 	private void buildExistingComponents() {
-		/* TEMPORARY */
+		/* TEMPORARY
 		addComponent(myComponentDatabase.getComponent(1), 1);
 		addComponent(myComponentDatabase.getComponent(2), 1);
-		addComponent(myComponentDatabase.getComponent(3), 1);
+		addComponent(myComponentDatabase.getComponent(3), 1); */
+		List<ComponentListItem> compList = myProject.getComponents();
+		
+		for (ComponentListItem CLI : compList) {
+			DIYProjectComponent newComponentDisplay = new DIYProjectComponent(CLI.getComponent(), CLI.getQuantity());
+		    myInnerPane.getChildren().add(newComponentDisplay);			
+		}		
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
@@ -158,6 +169,5 @@ public class DIYProjectPanel {
 	//public void setComponentDatabases(final Component the)
 	public void deleteComponent(final int theID) {
 		myProject.removeComponent(theID);
-		
 	}
 }

@@ -4,6 +4,7 @@ package Model;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,20 +16,30 @@ import java.util.HashMap;
 /**
  * A database of components.
  * 
- * @author Keegan Wantz - wantzkt@uw.edu (The whole thing for now!)
+ * @author Keegan Wantz - wantzkt@uw.edu (The whole thing)
  */
 public class ComponentDatabase {
-
+	/**  */
+	final static int MINIMUM_ID = 0;
+	/** */
 	private Map<Integer, ComponentHolder> myCachedComponents;
 	
-	// Load sqlite JDBC driver
+	/** JDBC Connection */
 	private Connection conn;
-	//Statement stmt;
 	
+	/** */
 	public ComponentDatabase() {
 		conn = null;
 		
 		myCachedComponents = new HashMap<>();
+		
+		// TEMP FOR TESTING
+		/*connect();
+		Component test = new Component(0, "ADD_TEST", BigDecimal.ONE, BigDecimal.TEN, 10, 11, 12, 13, 14, "Ice Cream", 99, BigDecimal.ZERO, null);
+		if (addComponent(test))
+			System.out.println("Added the test.");
+		else
+			System.out.println("Failed to add the test.");*/
 	}
 	
 	public int connect() {
@@ -46,7 +57,15 @@ public class ComponentDatabase {
 		}
 	}
 	
-	public Component getComponent(int theID) {
+	/**
+	 * 
+	 * @param theID
+	 * @return
+	 */
+	public Component getComponent(final int theID) {
+		if (theID < MINIMUM_ID)
+			return null;
+		
 		ComponentHolder cached = myCachedComponents.get(theID);
 		if (cached != null) {
 			if (!cached.getDirty()) {
@@ -105,6 +124,10 @@ public class ComponentDatabase {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Component> getAllComponents() {
 		String query = "select " + 
 				"ID, Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour \n" + 
@@ -122,6 +145,9 @@ public class ComponentDatabase {
 
 			while(res.next()) {
 				int ID = res.getInt("ID");
+				if (ID < MINIMUM_ID)
+					continue;
+				
 				String name = res.getString("Name");
 
 				BigDecimal cost = new BigDecimal(res.getString("Cost"));
@@ -162,6 +188,44 @@ public class ComponentDatabase {
 		}
 		
 		return output;
+	}
+	
+	/**
+	 * 
+	 * @param theComponent
+	 * @return
+	 */
+	public boolean addComponent(final Component theComponent) {
+		
+		String insert = "INSERT INTO Components(Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(insert);
+			stmt.setString(1, theComponent.getName());
+			stmt.setString(2, theComponent.getCost().toString());
+			stmt.setString(3, theComponent.getCostPerMonth().toString());
+			stmt.setDouble(4, theComponent.getLength());
+			stmt.setDouble(5, theComponent.getWidth());
+			stmt.setDouble(6, theComponent.getHeight());
+			stmt.setDouble(7, theComponent.getMyRadius());
+			stmt.setDouble(8, theComponent.getWeight());
+			stmt.setString(9, theComponent.getMaterial());
+			stmt.setDouble(10, theComponent.getManHrs());
+			stmt.setString(11, theComponent.getCostPerManHr().toString());
+			
+			
+			stmt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL error.");
+		}
+		
+		return false;
+	}
+	
+	public void deleteComponent(int theComponentID) {
+		
 	}
 	
 	/**
