@@ -19,15 +19,17 @@ import java.util.HashMap;
  * @author Keegan Wantz - wantzkt@uw.edu (The whole thing)
  */
 public class ComponentDatabase {
-	/**  */
-	final static int MINIMUM_ID = 0;
-	/** */
+	/** The location of the database, and what driver to use. */
+	final String DATABASE_CONNECTION_STRING = "jdbc:sqlite:Components.db";
+	/** The minimum 'valid' part, anything below this is for testing. */
+	final static int MINIMUM_ID = 5;
+	/** A cache of all components that have been accessed. */
 	private Map<Integer, ComponentHolder> myCachedComponents;
 	
 	/** JDBC Connection */
 	private Connection conn;
 	
-	/** */
+	/** Constructs a new ComponentDatabase. */
 	public ComponentDatabase() {
 		conn = null;
 		
@@ -42,10 +44,15 @@ public class ComponentDatabase {
 			System.out.println("Failed to add the test.");*/
 	}
 	
+	/**
+	 * Connects to the database. Returns an integer for future expansion.
+	 * 
+	 * @return 1 if success, 0 otherwise.
+	 */
 	public int connect() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:Components.db");
+			conn = DriverManager.getConnection(DATABASE_CONNECTION_STRING);
 						
 			return 1;
 		} catch (SQLException e) {
@@ -58,19 +65,50 @@ public class ComponentDatabase {
 	}
 	
 	/**
+	 * Closes the connection to the database.
+	 */
+	public void close() {
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#finalize()
+	 */
+	@Override
+	public void finalize() {
+		close();
+	}
+
+	/**
+	 * Gets a component from the database, given its ID.
 	 * 
-	 * @param theID
-	 * @return
+	 * @param theID The ID of the component to retrieve.
+	 * @return The Component, or null if it does not exist.
 	 */
 	public Component getComponent(final int theID) {
-		if (theID < MINIMUM_ID)
+		return getComponent(theID, false);
+	}
+	
+	/**
+	 * Gets a component from the database, given its ID, includes a check to bypass the ID verification for testing.
+	 * 
+	 * @param theID The ID of the component to retrieve.
+	 * @return The Component, or null if it does not exist.
+	 */
+	public Component getComponent(final int theID, boolean bypassIDCheck) {
+		if (theID < MINIMUM_ID && !bypassIDCheck)
 			return null;
 		
 		ComponentHolder cached = myCachedComponents.get(theID);
 		if (cached != null) {
-			if (!cached.getDirty()) {
-				return cached.getComponent();
-			}
+			return cached.getComponent();
 		}		
 		
 		String query = "select " + 
@@ -99,7 +137,7 @@ public class ComponentDatabase {
 				
 				String material = res.getString("Material");
 				
-				double manHours = res.getDouble("Width");		
+				double manHours = res.getDouble("EstimatedManHours");		
 				BigDecimal costPerManHour = new BigDecimal(res.getString("CostPerManHour"));
 				
 				
@@ -110,23 +148,23 @@ public class ComponentDatabase {
 				ComponentHolder cacheHolder = new ComponentHolder(toCache);
 				
 				myCachedComponents.put(ID, cacheHolder);
+
+				stmt.close();
 				
 				return toCache;				
 			}
-			
+			stmt.close();			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
+		}	
 		
 		return null;
 	}
 	
 	/**
+	 * Gets a list of all components within the database.
 	 * 
-	 * @return
+	 * @return a List<Component> of all components in the database.
 	 */
 	public List<Component> getAllComponents() {
 		String query = "select " + 
@@ -165,9 +203,7 @@ public class ComponentDatabase {
 				
 				ComponentHolder cached = myCachedComponents.get(ID);
 				if (cached != null) {
-					if (!cached.getDirty()) {
-						output.add(cached.getComponent());
-					}
+					output.add(cached.getComponent());
 				} else {		
 				
 					Component component = new Component(ID, name, cost, monthlyCost, length, width, height,
@@ -181,7 +217,8 @@ public class ComponentDatabase {
 					output.add(component);
 				}		
 			}
-			
+
+			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -191,12 +228,12 @@ public class ComponentDatabase {
 	}
 	
 	/**
+	 * Adds a component to the database.
 	 * 
-	 * @param theComponent
-	 * @return
+	 * @param theComponent The component to add to the database.
+	 * @return True if success, false if failure.
 	 */
 	public boolean addComponent(final Component theComponent) {
-		
 		String insert = "INSERT INTO Components(Name, Cost, MonthlyCost, Length, Width, Height, Radius, Weight, Material, EstimatedManHours, CostPerManHour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement stmt;
@@ -216,6 +253,7 @@ public class ComponentDatabase {
 			
 			
 			stmt.executeUpdate();
+			stmt.close();
 			return true;
 		} catch (SQLException e) {
 			System.out.println("SQL error.");
@@ -224,8 +262,30 @@ public class ComponentDatabase {
 		return false;
 	}
 	
-	public void deleteComponent(int theComponentID) {
+	/**
+	 * Deletes a component from the database.
+	 * 
+	 * @param theComponentID The ID to delete.
+	 * @return True if success, false if failure.
+	 */
+	public boolean deleteComponent(int theComponentID) {
+		String delete = "DELETE FROM Components WHERE (ID == ?)";
+		if (myCachedComponents.get(theComponentID) != null)
+			myCachedComponents.put(theComponentID, null);
 		
+		PreparedStatement stmt;
+		try {
+			stmt = conn.prepareStatement(delete);
+			stmt.setInt(1, theComponentID);			
+			
+			stmt.executeUpdate();
+			stmt.close();
+			return true;
+		} catch (SQLException e) {
+			System.out.println("SQL error.");
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -236,23 +296,13 @@ public class ComponentDatabase {
 	 */
 	private class ComponentHolder {
 		private Component myComponent;
-		private boolean myIsDirty;
 		
 		private ComponentHolder(Component theComponent) {
 			myComponent = theComponent;
-			myIsDirty = false;
 		}
 		
 		private Component getComponent() {
 			return myComponent;
-		}
-		
-		private void setDirty() {
-			myIsDirty = true;
-		}
-		
-		private boolean getDirty() {
-			return myIsDirty;
 		}
 	}
 }

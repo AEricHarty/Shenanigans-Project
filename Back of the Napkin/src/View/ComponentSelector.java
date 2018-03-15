@@ -39,7 +39,7 @@ public class ComponentSelector extends Dialog<Component>{
 		myProject = theProject;
 
 		myTable.setItems(getInitialData());
-		
+		 
 		TableColumn<Component, String> nameCol = new TableColumn<Component, String>("Name");
 		nameCol.setCellValueFactory(new PropertyValueFactory<Component, String>("name"));
 		TableColumn<Component, BigDecimal> initialCostCol = new TableColumn<Component, BigDecimal>("Initial Cost");
