@@ -49,7 +49,7 @@ public class DIYProjectPanel {
 		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
 		
 
-		dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, myProject); //Aaron Bardsley (3/8/2018 11:58pm)
+		//dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, theProject); //Aaron Bardsley (3/8/2018 11:58pm)
 	}
 
 	
@@ -70,7 +70,8 @@ public class DIYProjectPanel {
 		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley (start)
 			@Override
 			public void handle(ActionEvent event) {
-				Optional<Component> result = dialog.view();
+				ComponentSelector newDialog = new ComponentSelector(myComponentDatabase, myProject);
+				Optional<Component> result = newDialog.view();;
 				if (result.isPresent()) {
 					addComponent(result.get(), 1);
 					myStage.sizeToScene();
