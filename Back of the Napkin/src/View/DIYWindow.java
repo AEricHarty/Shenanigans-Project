@@ -98,12 +98,6 @@ public class DIYWindow extends Application {
         });
         
         BorderPane border = new BorderPane();
-
-        // Menu bar (top)
-        final DIYMenu myMenu = new DIYMenu();
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(myMenu.getFileMenu(), myMenu.getHelpMenu());
-        border.setTop(menuBar);
         
         // Side Panel (left)
         //final DIYSidePanel sidePanel = new DIYSidePanel(primaryStage, list);
@@ -117,16 +111,24 @@ public class DIYWindow extends Application {
         border.setRight(analysisPanels.get(0).getPanel());
         
         // Project Panel (center)
+        int j;
         final List<DIYProjectPanel> projectPanels = new LinkedList<>();
-        for (int i = 0; i < numOfProjects; i++) {
-        	projectPanels.add(new DIYProjectPanel(primaryStage, list.get(i), myComponentDatabases.get(i)));
+        for (j = 0; j < numOfProjects; j++) {
+        	projectPanels.add(new DIYProjectPanel(primaryStage, list.get(j), myComponentDatabases.get(j)));
         }
-        border.setCenter(projectPanels.get(0).getPanel());
+        border.setCenter(projectPanels.get(0).getPanel());   
+        
+        // Menu bar (top)
+        final DIYMenu myMenu = new DIYMenu(primaryStage, list.get(j-1));	//Added to make save/load work -EH
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(myMenu.getFileMenu(), myMenu.getHelpMenu());
+        border.setTop(menuBar);
         
         // Add listeners to ListView's Items
         projectListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
         	public void changed(ObservableValue<? extends Project> observable,Project oldValue, Project newValue) {
         		System.out.println("New Project: " + newValue.getName());
+        		myMenu.updateProject(newValue);		//Added to make save/load work -EH
         		int index = list.indexOf(newValue);
         		border.setCenter(projectPanels.get(index).getPanel());
         		border.setRight(analysisPanels.get(index).getPanel());
