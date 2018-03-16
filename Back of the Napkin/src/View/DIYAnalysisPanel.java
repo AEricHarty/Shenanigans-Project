@@ -1,10 +1,14 @@
 package View;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import Model.Project;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 
 /**
  * The Analysis Panel.
@@ -13,25 +17,25 @@ import javafx.stage.Stage;
  * @modified Keegan Wantz - wantzkt@uw.edu (added updateFields method)
  * @version .75
  */
-public class DIYAnalysisPanel {
+public class DIYAnalysisPanel implements Observer {
 	
 	/** The Header label. */
-	private static final Label HEADER = new Label("Header");
+	private final Label HEADER = new Label("Header");
 	
 	/** The Cost label. */
-	private static final Label COST = new Label("Cost");
+	private final Label COST = new Label("Cost");
 	
 	/** The Cost Per Month label. */
-	private static final Label COST_PER_MONTH = new Label("Cost Per Month");
+	private final Label COST_PER_MONTH = new Label("Cost Per Month");
 	
 	/** The Weight label. */
-	private static final Label WEIGHT = new Label("Weight");
+	private final Label WEIGHT = new Label("Weight");
 	
 	/** The Man Hours label. */
-	private static final Label MAN_HOURS = new Label("Man Hours");
+	private final Label MAN_HOURS = new Label("Man Hours");
 	
 	/** The Cost Per Man Hour label. */
-	private static final Label COST_PER_MAN_HOUR = new Label("Cost Per Man Hour");
+	private final Label COST_PER_MAN_HOUR = new Label("Cost Per Man Hour");
 	
 	/** The header of the project. */
 	private Label myHeader;
@@ -69,6 +73,8 @@ public class DIYAnalysisPanel {
 	public DIYAnalysisPanel(final Stage theStage, Project theProject) {		
 		myStage = theStage;
 		myProject = theProject;
+		
+		myProject.addObserver(this);
 		
 		myAnalysisPanel = buildAnalysisPanel();
 		updateFields();
@@ -179,5 +185,10 @@ public class DIYAnalysisPanel {
 	 */
 	public GridPane getPanel() {
 		return myAnalysisPanel;
+	}
+
+	@Override
+	public void update(Observable theProject, Object theUpdate) {
+		updateFields();
 	}
 }

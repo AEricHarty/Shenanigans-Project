@@ -11,9 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.util.Observable;
 
 /**
  * A DIY Project object.
@@ -21,13 +19,13 @@ import javafx.beans.property.StringProperty;
  * @author Eric Harty hartye@uw.edu
  * @version .75
  */
-public class Project implements Serializable {
+public class Project extends Observable implements Serializable {
 
 	/**Generated VersionID - 3/12- EH*/
 	private static final long serialVersionUID = 9074716694653347193L;
 
 	/**The name of this Project.*/
-    private StringProperty myName;
+    private String myName;
 
 	/**The list of Components.*/
     public LinkedList<ComponentListItem> myComponents;
@@ -38,8 +36,7 @@ public class Project implements Serializable {
      * 
      */
     public Project() {
-    	myName = new SimpleStringProperty();
-    	myName.set("Untitled");
+    	myName = "Untitled";
 		myComponents = new LinkedList<ComponentListItem>();
 	}
     
@@ -63,7 +60,7 @@ public class Project implements Serializable {
         } catch (ClassNotFoundException e) {
         	System.out.println("Incorrect file type");
         }
-    	myName.setValue(temp.getName());
+    	myName = temp.getName();
 		myComponents = temp.getComponents();
 	}
 
@@ -72,16 +69,9 @@ public class Project implements Serializable {
 	 * @return the Name
 	 */
 	public String getName() {
-		return myName.get();
-	}
-	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the Name
-	 */
-	public StringProperty getNameProperty() {
 		return myName;
 	}
+	
 	
 	/**
 	 * @author Eric Harty - hartye@uw.edu
@@ -162,7 +152,9 @@ public class Project implements Serializable {
 	 * @param myName the myName to set
 	 */
 	public void setName(String theName) {
-		myName.set(theName);
+		myName = theName;
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -175,6 +167,8 @@ public class Project implements Serializable {
 	public void addComponent(Component theComponent, int theQuantity) {
 		ComponentListItem c = new ComponentListItem(theComponent, theQuantity);
 		myComponents.add(c);
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -193,6 +187,8 @@ public class Project implements Serializable {
 				break;
 			}
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -214,5 +210,10 @@ public class Project implements Serializable {
         }
 	}
     
-    
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 */
+    public String toString() {
+    	return getName();
+    }
 }

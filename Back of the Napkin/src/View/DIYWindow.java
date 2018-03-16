@@ -3,6 +3,8 @@ package View;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import Model.Component;
 import Model.ComponentDatabase;
@@ -29,13 +31,15 @@ import javafx.util.Callback;
  * @author Khoa Doan
  *
  */
-public class DIYWindow extends Application {
+public class DIYWindow extends Application implements Observer {
 
 	static int numOfProjects = 4;
-	ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
+	private ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
 	ListView<Project> projectListView = new ListView<Project>();
 	ComponentDatabase myComponentDatabase;
 	
+	BorderPane myLayout;
+	 
 	/**
 	 * @author Keegan Wantz - wantzkt@uw.edu
 	 * 
@@ -73,33 +77,34 @@ public class DIYWindow extends Application {
         for (int i = 0; i < numOfProjects; i++) {
         	Project p = new Project();
         	p.setName("Temp #" + i);
+        	p.addObserver(this);
         	list.add(p);
-        	
         }
         
         // Create the ListView
         for (int i = 0; i < numOfProjects; i++) {
         	observableProjectList.add(list.get(i));
         }
+        
         projectListView = new ListView<Project>(observableProjectList);
         projectListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         
         // Change the displayed name of project in ListView
-        projectListView.setCellFactory(new Callback<ListView<Project>, ListCell<Project>>() {
+        /*projectListView.setCellFactory(new Callback<ListView<Project>, ListCell<Project>>() {
             @Override
             public ListCell<Project> call(ListView<Project> param) {
                  ListCell<Project> cell = new ListCell<Project>() {
-                     @Override
+                    @Override
                     protected void updateItem(Project item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item != null) {
-                        	textProperty().bind(item.getNameProperty());
+                        	textProperty().set(item.getName());
                         }
                     }
                  };
                 return cell;
             }
-        });
+        });*/
         
         BorderPane border = new BorderPane();
         
@@ -151,5 +156,18 @@ public class DIYWindow extends Application {
         primaryStage.sizeToScene(); // Dynamic window size (Aaron 3/9/2018 12:36am)
         
         primaryStage.show();
+        
+        myLayout = border;
     }
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (myLayout != null) {
+			int idx = projectListView.getSelectionModel().getSelectedIndex();
+	        projectListView = new ListView<Project>(observableProjectList);
+	        projectListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+	        projectListView.getSelectionModel().select(idx);
+	        myLayout.setLeft(projectListView);			
+		}		
+	}
 }
