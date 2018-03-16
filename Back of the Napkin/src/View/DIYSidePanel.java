@@ -91,7 +91,6 @@ public class DIYSidePanel {
 	 * @param theIndex of the project to be removed
 	 */
 	public void removeProject(final int theIndex) {
-		
 		mySidePanel.getChildren().remove(theIndex);
 	}
 	

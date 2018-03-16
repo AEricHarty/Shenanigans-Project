@@ -63,7 +63,6 @@ public class DIYProjectPanel {
 
 	/**
 	 * @author Eric Harty - hartye@uw.edu
-	 * 
 	 * @return the 'Rename Project' Button
 	 * @details On action click opens the input dialog. then renames the project.
 	 */
@@ -72,7 +71,7 @@ public class DIYProjectPanel {
 		renameButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				TextInputDialog dialog = new TextInputDialog("untitled");
+				TextInputDialog dialog = new TextInputDialog(myProject.getName());
 				dialog.setTitle("Rename Project");
 				dialog.setContentText("Please enter name:");
 				Optional<String> result = dialog.showAndWait();
