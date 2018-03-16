@@ -43,7 +43,7 @@ public class DIYSidePanel {
      * @return the Side panel
      */
 	private GridPane buildSidePanel(final List<Project> theProjectList) {
-		final GridPane grid = new GridPane();
+		final GridPane grid = new GridPane(); 
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);

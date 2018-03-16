@@ -11,9 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.util.Observable;
 
 /**
  * A DIY Project object.
@@ -21,22 +19,13 @@ import javafx.beans.property.StringProperty;
  * @author Eric Harty hartye@uw.edu
  * @version .75
  */
-public class Project implements Serializable {
+public class Project extends Observable implements Serializable {
 
 	/**Generated VersionID - 3/12- EH*/
 	private static final long serialVersionUID = 9074716694653347193L;
 
 	/**The name of this Project.*/
-    private StringProperty myName;
-
-    /**The misc cost of the project.*/
-    private BigDecimal myMiscCost;
-    
-    /**The estimated man-hours.*/
-    private double myManHrs;
-    
-    /**The current cost per kWh of energy used.*/
-    private BigDecimal myPowerCost;
+    private String myName;
 
 	/**The list of Components.*/
     public LinkedList<ComponentListItem> myComponents;
@@ -47,11 +36,7 @@ public class Project implements Serializable {
      * 
      */
     public Project() {
-    	myName = new SimpleStringProperty();
-    	myName.set("Untitled");
-		myMiscCost = new BigDecimal("0.00");
-		myPowerCost = new BigDecimal("0.00");
-		myManHrs = 0;
+    	myName = "Untitled";
 		myComponents = new LinkedList<ComponentListItem>();
 	}
     
@@ -75,10 +60,7 @@ public class Project implements Serializable {
         } catch (ClassNotFoundException e) {
         	System.out.println("Incorrect file type");
         }
-    	myName.setValue(temp.getName());
-		myMiscCost = temp.getMiscCost();
-		myPowerCost = temp.getPowerCost();
-		myManHrs = temp.getManHrs();
+    	myName = temp.getName();
 		myComponents = temp.getComponents();
 	}
 
@@ -87,40 +69,9 @@ public class Project implements Serializable {
 	 * @return the Name
 	 */
 	public String getName() {
-		return myName.get();
-	}
-	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the Name
-	 */
-	public StringProperty getNameProperty() {
 		return myName;
 	}
 	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the current cost per kWh of energy used
-	 */
-	public BigDecimal getPowerCost() {
-		return myPowerCost;
-	}
-
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the ManHrs
-	 */
-	public double getManHrs() {
-		return myManHrs;
-	}
-
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @return the MiscCost
-	 */
-	public BigDecimal getMiscCost() {
-		return myMiscCost;
-	}
 	
 	/**
 	 * @author Eric Harty - hartye@uw.edu
@@ -129,39 +80,6 @@ public class Project implements Serializable {
 	public LinkedList<ComponentListItem> getComponents() {
 		return myComponents;
 	}
-	
-	/**
-	 * Calculates and returns the total energy cost in kWh for this project.
-	 * @author Eric Harty - hartye@uw.edu
-	 * 
-	 *  folded in to monthly cost in components
-	 * 
-	 * @return the total energy consumption
-	 */
-	/*public double getTotalEnergy() {
-		double kWh = 0;
-		for(ComponentListItem c : myComponents) {
-        	double subt = c.getComponent().getEnergyConsumption();
-        	subt = subt * c.getQuantity();
-        	kWh += subt;
-        }
-		return kWh;
-	}*/
-	
-	/**
-	 * Calculates and returns the total energy cost in kWh for this project.
-	 * @author Eric Harty - hartye@uw.edu
-	 * 
-	 * folded in to monthly cost in components
-	 * 
-	 * @return the cost to power this project
-	 */
-	/*public BigDecimal getTotalPowerCost() {
-		BigDecimal total = myPowerCost;
-		BigDecimal use = new BigDecimal(this.getTotalEnergy());
-		total = total.multiply(use);
-		return total;
-	}*/
 
 	/**
 	 * Calculates and returns the cost per month for this project.
@@ -187,7 +105,7 @@ public class Project implements Serializable {
 	 * @return the Total Cost
 	 */
 	public BigDecimal getTotalUpfrontCost() {
-		BigDecimal total = myMiscCost;
+		BigDecimal total = BigDecimal.ZERO;
 		for(ComponentListItem c : myComponents) {
         	BigDecimal subt = c.getComponent().getCost();
         	BigDecimal q = new BigDecimal(c.getQuantity());
@@ -204,7 +122,7 @@ public class Project implements Serializable {
 	 * @return the total man-hours
 	 */
 	public double getTotalManHrs() {
-		double hrs = myManHrs;
+		double hrs = 0;
 		for(ComponentListItem c : myComponents) {
         	double subt = c.getComponent().getManHrs();
         	subt = subt * c.getQuantity();
@@ -212,6 +130,21 @@ public class Project implements Serializable {
         }
 		return hrs;
 	}
+	
+	/**
+	 * Calculates and returns the total weight for this project.
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 * 
+	 * @return the total man-hours
+	 */
+	public double getTotalWeight() {
+		double weight = 0;
+		for(ComponentListItem c : myComponents) {
+			weight += c.getComponent().getWeight() * c.getQuantity();
+        }
+		return weight;
+	}
+
 
 	
 	/**
@@ -219,33 +152,11 @@ public class Project implements Serializable {
 	 * @param myName the myName to set
 	 */
 	public void setName(String theName) {
-		myName.set(theName);
+		myName = theName;
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @param powerCost the powerCost to set
-	 */
-	public void setPowerCost(BigDecimal powerCost) {
-		myPowerCost = powerCost;
-	}
-	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @param the ManHrs to set
-	 */
-	public void setManHrs(double theManHrs) {
-		myManHrs = theManHrs;
-	}
-	
-	/**
-	 * @author Eric Harty - hartye@uw.edu
-	 * @param the MiscCost to set
-	 */
-	public void setMiscCost(BigDecimal theMiscCost) {
-		myMiscCost = theMiscCost;
-	}
-
 	/**
 	 * Adds a component with the given quantity to the component list.
 	 * @author Eric Harty - hartye@uw.edu
@@ -256,6 +167,8 @@ public class Project implements Serializable {
 	public void addComponent(Component theComponent, int theQuantity) {
 		ComponentListItem c = new ComponentListItem(theComponent, theQuantity);
 		myComponents.add(c);
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -274,6 +187,8 @@ public class Project implements Serializable {
 				break;
 			}
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	/**
@@ -295,5 +210,10 @@ public class Project implements Serializable {
         }
 	}
     
-    
+	/**
+	 * @author Keegan Wantz - wantzkt@uw.edu
+	 */
+    public String toString() {
+    	return getName();
+    }
 }

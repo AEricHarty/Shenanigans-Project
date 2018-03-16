@@ -18,8 +18,7 @@ import Model.Project;
  * 
  * @author Eric Harty - hartye@uw.edu
  */
-class ProjectTest {
-	
+class ProjectTest {	
 	private static final BigDecimal COST = new BigDecimal("5.15");
 	private static final BigDecimal CPM = new BigDecimal("7.50");
     private Project myProject;
@@ -54,9 +53,6 @@ class ProjectTest {
 	void setUp() throws Exception {
 		myProject = new Project();
 		myProject.setName(myName);
-		myProject.setMiscCost(myMiscCost);
-		myProject.setPowerCost(myPowerCost);
-		myProject.setManHrs(myManHrs);
 	}
 	
 	/**
@@ -112,8 +108,6 @@ class ProjectTest {
 		Project copy = new Project(path);
 		
 		assertEquals(myProject.getName(), copy.getName());
-		assertEquals(myProject.getMiscCost(), copy.getMiscCost());
-		assertEquals(myProject.getManHrs(), copy.getManHrs());
 		assertEquals(myProject.getComponents(), copy.getComponents());
 		assertEquals(myProject.getTotalUpfrontCost(), copy.getTotalUpfrontCost());
 		assertEquals(myProject.getCostPerMonth(), copy.getCostPerMonth());
