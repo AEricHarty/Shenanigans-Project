@@ -182,6 +182,26 @@ public class Component {
     public final BigDecimal getUnitCost() {
     	return myCost;
     }
+    
+    /**
+     * Returns the Unit cost-per-month of this component.
+     * @author Eric Harty - hartye@uw.edu
+     * 
+     * @return the BigDecimal price
+     */
+    public final BigDecimal getUnitCPM() {
+    	return myCostPerMonth;
+    }
+    
+    /**
+     * Returns the Unit man-hours of this component.
+     * @author Eric Harty - hartye@uw.edu
+     * 
+     * @return the ManHrs
+	 */
+	public double getUnitManHrs() {
+		return myManHrs;
+	}
 
     /**
      * Calculates and returns the total price of one of this
@@ -203,16 +223,6 @@ public class Component {
     }
     
     /**
-     * Returns the Unit cost-per-month of this component.
-     * @author Eric Harty - hartye@uw.edu
-     * 
-     * @return the BigDecimal price
-     */
-    public final BigDecimal getUnitCPM() {
-    	return myCostPerMonth;
-    }
-    
-    /**
      * Calculates and returns the total price-per-month for one of 
      * this component and all subcomponents.
      * @author Eric Harty - hartye@uw.edu
@@ -230,16 +240,6 @@ public class Component {
         }
     	return total;
     }
-    
-    /**
-     * Returns the Unit man-hours of this component.
-     * @author Eric Harty - hartye@uw.edu
-     * 
-     * @return the ManHrs
-	 */
-	public double getUnitManHrs() {
-		return myManHrs;
-	}
     
     /**
      * Returns the estimated man-hours for this component 

@@ -45,8 +45,8 @@ public class Project implements Serializable {
      */
     public Project() {
 		myName = "Untitled";
-		myMiscCost = new BigDecimal(0);
-		myPowerCost = new BigDecimal(0);
+		myMiscCost = new BigDecimal("0.00");
+		myPowerCost = new BigDecimal("0.00");
 		myManHrs = 0;
 		myComponents = new LinkedList<ComponentListItem>();
 	}
