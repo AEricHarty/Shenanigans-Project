@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * A DIY Project object.
  * 
@@ -24,7 +27,7 @@ public class Project implements Serializable {
 	private static final long serialVersionUID = 9074716694653347193L;
 
 	/**The name of this Project.*/
-    private String myName;
+    private StringProperty myName;
 
     /**The misc cost of the project.*/
     private BigDecimal myMiscCost;
@@ -44,7 +47,8 @@ public class Project implements Serializable {
      * 
      */
     public Project() {
-		myName = "Untitled";
+    	myName = new SimpleStringProperty();
+    	myName.set("Untitled");
 		myMiscCost = new BigDecimal(0);
 		myPowerCost = new BigDecimal(0);
 		myManHrs = 0;
@@ -71,7 +75,7 @@ public class Project implements Serializable {
         } catch (ClassNotFoundException e) {
         	System.out.println("Incorrect file type");
         }
-    	myName = temp.getName();
+    	myName.setValue(temp.getName());
 		myMiscCost = temp.getMiscCost();
 		myPowerCost = temp.getPowerCost();
 		myManHrs = temp.getManHrs();
@@ -83,6 +87,14 @@ public class Project implements Serializable {
 	 * @return the Name
 	 */
 	public String getName() {
+		return myName.get();
+	}
+	
+	/**
+	 * @author Eric Harty - hartye@uw.edu
+	 * @return the Name
+	 */
+	public StringProperty getNameProperty() {
 		return myName;
 	}
 	
@@ -207,7 +219,7 @@ public class Project implements Serializable {
 	 * @param myName the myName to set
 	 */
 	public void setName(String theName) {
-		myName = theName;
+		myName.set(theName);
 	}
 	
 	/**

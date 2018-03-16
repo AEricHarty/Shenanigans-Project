@@ -85,10 +85,8 @@ public class DIYWindow extends Application {
                      @Override
                     protected void updateItem(Project item, boolean empty) {
                         super.updateItem(item, empty);
-                        if(item != null) {
-                            setText(item.getName());
-                        } else {
-                            setText(null);
+                        if (item != null) {
+                        	textProperty().bind(item.getNameProperty());
                         }
                     }
                  };
