@@ -43,11 +43,12 @@ public class DIYMenu {
      * @author Aaron Bardsley
 	 * @param primaryStage
 	 * @param theProject currently displayed project
+	 * @param theWindow 
      * @modified Keegan Wantz - wantzkt@uw.edu (added EventHandler for the About button)
      * @modified Eric Harty - hartye@uw.edu (added EventHandler for the Save/Load 
      * 										and added the project as arg)
      */
-	public DIYMenu(final Stage primaryStage, final Project theProject) {
+	public DIYMenu(final Stage primaryStage, final Project theProject, DIYWindow theWindow) {
 		myProject = theProject;
 		myStage = primaryStage;
 		myFileMenu = new Menu("File");
@@ -90,14 +91,10 @@ public class DIYMenu {
 				File file = fileChooser.showOpenDialog(myStage);
                 if (file != null) {
                 	Project p = new Project(file);
-                	//Then we need a method to display this new project...
-                }
-                
-			}
-        	
-        });
-        
-        
+                	theWindow.observableProjectList.add(p);
+                }  
+			}        	
+        }); 
 	}
 	
 	/**
