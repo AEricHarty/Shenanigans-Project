@@ -1,9 +1,11 @@
 package Model;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Observable;
+import java.util.Scanner;
 
 /**
  * A DIY Project object.
@@ -45,7 +48,7 @@ public class Project extends Observable implements Serializable {
      * @author Eric Harty - hartye@uw.edu
      * 
      */
-    public Project(File theFile) {
+    /*public Project(File theFile) {
     	Project temp = null;
     	try {
             FileInputStream fi = new FileInputStream(theFile);
@@ -62,7 +65,7 @@ public class Project extends Observable implements Serializable {
         }
     	myName = temp.getName();
 		myComponents = temp.getComponents();
-	}
+	}*/
 
 	/**
 	 * @author Eric Harty - hartye@uw.edu
@@ -194,22 +197,30 @@ public class Project extends Observable implements Serializable {
 	/**
 	 * Saves the project as name.txt in the same folder as the jar.
 	 * @author Eric Harty - hartye@uw.edu
-	 * 
+	 * @modified Keegan Wantz - wantzkt@uw.edu
 	 */
 	public void saveProject() {
         try {
-			FileOutputStream f = new FileOutputStream(new File(myName + ".txt"));
+			/*FileOutputStream f = new FileOutputStream(new File(myName + ".txt"));
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(this);
             o.close();
-            f.close();
+            //f.close();*/
+        	BufferedWriter writer = new BufferedWriter(new FileWriter(myName + ".txt", true));
+			writer.write(getName() + "\n");
+    		for (ComponentListItem c : myComponents) {
+    			writer.write(c.getComponent().getMyID() + "\n");
+    			writer.write(c.getQuantity() + "\n");
+    		}
+    		writer.close();
+        	
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         }
 	}
-    
+	
 	/**
 	 * @author Keegan Wantz - wantzkt@uw.edu
 	 */

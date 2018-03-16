@@ -34,7 +34,7 @@ import javafx.util.Callback;
 public class DIYWindow extends Application implements Observer {
 
 	static int numOfProjects = 4;
-	private ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
+	ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
 	ListView<Project> projectListView = new ListView<Project>();
 	List<DIYAnalysisPanel> myAnalysisPanels;
 	List<DIYProjectPanel> myProjectPanels;
@@ -126,7 +126,7 @@ public class DIYWindow extends Application implements Observer {
         border.setCenter(myProjectPanels.get(0).getPanel());   
         
         // Menu bar (top)
-        myMenu = new DIYMenu(primaryStage, observableProjectList.get(j-1));	//Added to make save/load work -EH
+        myMenu = new DIYMenu(primaryStage, observableProjectList.get(j-1), this);	//Added to make save/load work -EH
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(myMenu.getFileMenu(), myMenu.getHelpMenu());
         border.setTop(menuBar);

@@ -1,7 +1,10 @@
 package View;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
+import Model.Component;
 import Model.Project;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -90,8 +93,35 @@ public class DIYMenu {
 			public void handle(ActionEvent e) {
 				File file = fileChooser.showOpenDialog(myStage);
                 if (file != null) {
-                	Project p = new Project(file);
-                	theWindow.observableProjectList.add(p);
+                	/**
+                	 * Loads a project
+                	 * @author Keegan Wantz - wantzkt@uw.edu
+                	 * 
+                	 * This is super hacky and I hate it.
+                	 */
+                	//Project p = Project.loadFile(file);
+                	Scanner fileScanner;
+					try {
+						fileScanner = new Scanner(file);
+	                	Project proj = new Project();
+	                	proj.setName(fileScanner.nextLine());
+	                	while (fileScanner.hasNextInt()) {
+	                		int id = fileScanner.nextInt();
+	                		int qty = fileScanner.nextInt();
+	                		Component c = theWindow.myComponentDatabase.getComponent(id);
+	                		if (c != null)
+	                			proj.addComponent(c, qty);
+	                	}
+
+	                	theWindow.observableProjectList.add(proj);
+	                	theWindow.myAnalysisPanels.add(new DIYAnalysisPanel(primaryStage, proj));
+	                	theWindow.myProjectPanels.add(new DIYProjectPanel(primaryStage, proj, theWindow.myComponentDatabase));
+	    
+					} catch (FileNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                    
                 }  
 			}        	
         }); 
