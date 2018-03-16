@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class Component {
 
+	/**A margin of error for comparing doubles*/
+    private final double TOLERANCE = .000001;
+	
 	/**The ID of this component.*/
     private final int myID;
 	
@@ -351,16 +354,16 @@ public class Component {
 		if (!myCostPerManHr.equals(other.myCostPerManHr)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(myHeight) != Double.doubleToLongBits(other.myHeight)) {
+		if (Math.abs(Double.doubleToLongBits(myHeight) - Double.doubleToLongBits(other.myHeight)) > TOLERANCE){
 			return false;
 		}
 		if (myID != other.myID) {
 			return false;
 		}
-		if (Double.doubleToLongBits(myLength) != Double.doubleToLongBits(other.myLength)) {
+		if (Math.abs(Double.doubleToLongBits(myLength) - Double.doubleToLongBits(other.myLength)) > TOLERANCE){
 			return false;
 		}
-		if (Double.doubleToLongBits(myManHrs) != Double.doubleToLongBits(other.myManHrs)) {
+		if (Math.abs(Double.doubleToLongBits(myManHrs) - Double.doubleToLongBits(other.myManHrs)) > TOLERANCE){
 			return false;
 		}
 		if (myMaterial == null) {
@@ -384,10 +387,10 @@ public class Component {
 		} else if (!mySubComponents.equals(other.mySubComponents)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(myWeight) != Double.doubleToLongBits(other.myWeight)) {
+		if (Math.abs(Double.doubleToLongBits(myWeight) - Double.doubleToLongBits(other.myWeight)) > TOLERANCE){
 			return false;
 		}
-		if (Double.doubleToLongBits(myWidth) != Double.doubleToLongBits(other.myWidth)) {
+		if (Math.abs(Double.doubleToLongBits(myWidth) - Double.doubleToLongBits(other.myWidth)) > TOLERANCE){
 			return false;
 		}
 		return true;

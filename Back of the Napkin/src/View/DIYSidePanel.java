@@ -71,7 +71,7 @@ public class DIYSidePanel {
 	}
 	
 	/**
-	 * Adds another project to the panel
+	 * Adds another project to the panel	
 	 * 
 	 * @author Eric Harty - harty@uw.edu
 	 * @param theProject to be added
