@@ -36,6 +36,9 @@ public class DIYWindow extends Application implements Observer {
 	static int numOfProjects = 4;
 	private ObservableList<Project> observableProjectList = FXCollections.observableArrayList();
 	ListView<Project> projectListView = new ListView<Project>();
+	List<DIYAnalysisPanel> myAnalysisPanels;
+	List<DIYProjectPanel> myProjectPanels;
+	DIYMenu myMenu;
 	ComponentDatabase myComponentDatabase;
 	
 	BorderPane myLayout;
@@ -72,18 +75,12 @@ public class DIYWindow extends Application implements Observer {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Back of the Napkin!");
         
-        // temp project and list, used for testing
-        final List<Project> list = new LinkedList<>();
+        // Create the ListView
         for (int i = 0; i < numOfProjects; i++) {
         	Project p = new Project();
         	p.setName("Temp #" + i);
         	p.addObserver(this);
-        	list.add(p);
-        }
-        
-        // Create the ListView
-        for (int i = 0; i < numOfProjects; i++) {
-        	observableProjectList.add(list.get(i));
+        	observableProjectList.add(p);
         }
         
         projectListView = new ListView<Project>(observableProjectList);
@@ -113,22 +110,23 @@ public class DIYWindow extends Application implements Observer {
         border.setLeft(projectListView);
         
         // Analysis Panel (right)
-        final List<DIYAnalysisPanel> analysisPanels = new LinkedList<>();
+        myAnalysisPanels = new LinkedList<>();
+        
         for (int i = 0; i < numOfProjects; i++) {
-        	analysisPanels.add(new DIYAnalysisPanel(primaryStage, list.get(i)));
+        	myAnalysisPanels.add(new DIYAnalysisPanel(primaryStage, observableProjectList.get(i)));
         }
-        border.setRight(analysisPanels.get(0).getPanel());
+        border.setRight(myAnalysisPanels.get(0).getPanel());
         
         // Project Panel (center)
         int j;
-        final List<DIYProjectPanel> projectPanels = new LinkedList<>();
+        myProjectPanels = new LinkedList<>();
         for (j = 0; j < numOfProjects; j++) {
-        	projectPanels.add(new DIYProjectPanel(primaryStage, list.get(j), myComponentDatabase));
+        	myProjectPanels.add(new DIYProjectPanel(primaryStage, observableProjectList.get(j), myComponentDatabase));
         }
-        border.setCenter(projectPanels.get(0).getPanel());   
+        border.setCenter(myProjectPanels.get(0).getPanel());   
         
         // Menu bar (top)
-        final DIYMenu myMenu = new DIYMenu(primaryStage, list.get(j-1));	//Added to make save/load work -EH
+        myMenu = new DIYMenu(primaryStage, observableProjectList.get(j-1));	//Added to make save/load work -EH
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(myMenu.getFileMenu(), myMenu.getHelpMenu());
         border.setTop(menuBar);
@@ -138,10 +136,10 @@ public class DIYWindow extends Application implements Observer {
         	public void changed(ObservableValue<? extends Project> observable, Project oldValue, Project newValue) {
         		System.out.println("New Project: " + newValue.getName());
         		myMenu.updateProject(newValue);		//Added to make save/load work -EH
-        		int index = list.indexOf(newValue);
-        		border.setCenter(projectPanels.get(index).getPanel());
-        		analysisPanels.get(index).updateFields();
-        		border.setRight(analysisPanels.get(index).getPanel());        		
+        		int index = observableProjectList.indexOf(newValue);
+        		border.setCenter(myProjectPanels.get(index).getPanel());
+        		myAnalysisPanels.get(index).updateFields();
+        		border.setRight(myAnalysisPanels.get(index).getPanel());        		
         	}
         });
         
@@ -167,6 +165,18 @@ public class DIYWindow extends Application implements Observer {
 	        projectListView = new ListView<Project>(observableProjectList);
 	        projectListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	        projectListView.getSelectionModel().select(idx);
+	        
+	        projectListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
+	        	public void changed(ObservableValue<? extends Project> observable, Project oldValue, Project newValue) {
+	        		System.out.println("New Project: " + newValue.getName());
+	        		myMenu.updateProject(newValue);		//Added to make save/load work -EH
+	        		int index = observableProjectList.indexOf(newValue);
+	        		myLayout.setCenter(myProjectPanels.get(index).getPanel());
+	        		myAnalysisPanels.get(index).updateFields();
+	        		myLayout.setRight(myAnalysisPanels.get(index).getPanel());        		
+	        	}
+	        });
+	        
 	        myLayout.setLeft(projectListView);			
 		}		
 	}
