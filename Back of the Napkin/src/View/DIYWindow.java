@@ -1,5 +1,6 @@
 package View;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,7 +68,13 @@ public class DIYWindow extends Application {
         // temp project and list, used for testing
         final List<Project> list = new LinkedList<>();
         for (int i = 0; i < numOfProjects; i++) {
-        	list.add(new Project());
+        	Project p = new Project();
+        	p.setManHrs(1);
+        	p.setMiscCost(new BigDecimal("1.05"));
+        	p.setPowerCost(new BigDecimal("0.00"));
+        	p.setName("Temp #" + i);
+        	list.add(p);
+        	
         }
         
         // Create the ListView
