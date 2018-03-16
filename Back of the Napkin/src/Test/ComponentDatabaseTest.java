@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import Model.Component;
 import Model.ComponentDatabase;
+import Model.ComponentListItem;
 
 /**
  * Tests the Component Database.
@@ -103,14 +104,11 @@ public class ComponentDatabaseTest {
 
 	@Test
 	public void testAddComponent() {
-		Component testAdd = new Component(0, "ADD_TEST", BigDecimal.ONE, BigDecimal.TEN, 10, 11, 12, 13, 14, "Ice Cream", 0, BigDecimal.ZERO, null);
+		Component testAdd = new Component(0, "ADD_TEST", BigDecimal.ONE, BigDecimal.TEN, 1, 2, 3, 4, 5, "Ice Cream", 0, BigDecimal.ZERO, null);
 		dbTest.addComponent(testAdd);
 		List<Component> addedList = dbTest.getAllComponents();
-		
 		int id = addedList.get(addedList.size()-1).getMyID();
-		Component testCompare = new Component(id, "ADD_TEST", BigDecimal.ONE, BigDecimal.TEN, 10, 11, 12, 13, 14, "Ice Cream", 0, BigDecimal.ZERO, null);
-		
-		System.out.println("Wat: " + addedList.get(addedList.size()-1).getMyID());
+		Component testCompare = new Component(id, "ADD_TEST", BigDecimal.ONE, BigDecimal.TEN, 1, 2, 3, 4, 5, "Ice Cream", 0, BigDecimal.ZERO, null);
 		
 		assertEquals(testCompare, addedList.get(addedList.size()-1));
 	}

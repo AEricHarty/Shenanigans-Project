@@ -29,6 +29,7 @@ import javafx.util.Callback;
 /**
  * 
  * @author Khoa Doan
+ * @modified Keegan Wantz - wantzkt@uw.edu (Changes all over the place to add observer design pattern and make things work together.)
  *
  */
 public class DIYWindow extends Application implements Observer {
