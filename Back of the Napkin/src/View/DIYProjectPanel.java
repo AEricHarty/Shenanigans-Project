@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -41,6 +42,8 @@ public class DIYProjectPanel {
 	
 	private DIYComponentSelectorDialog dialog;
 	
+	private ToggleGroup myToggleGroup;
+	
 	private Stage myStage; //invoke myStage.sizeToScene() after an update (Aaron 3/9/2018 12:30am)
 	
 	/**
@@ -56,6 +59,8 @@ public class DIYProjectPanel {
 		myRemoveComponentButton = createRemoveButton();
 		
 		myProjectPanel = buildProjectPanel(myRenameProjectButton, myAddComponentButton, myRemoveComponentButton);
+		
+		myToggleGroup = new ToggleGroup();
 		
 
 		//dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, theProject); //Aaron Bardsley (3/8/2018 11:58pm)
@@ -120,8 +125,12 @@ public class DIYProjectPanel {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				
-				myStage.sizeToScene();
+				if (myToggleGroup.getSelectedToggle() != null) {
+					DIYProjectComponent theComponent = (DIYProjectComponent)myToggleGroup.getSelectedToggle().getUserData();
+					myProject.removeComponent(theComponent.getComponent().getMyID());
+					myInnerPane.getChildren().remove(myToggleGroup.getSelectedToggle().getUserData());
+					myStage.sizeToScene();
+				}
 			}
 		});
 		
@@ -185,18 +194,20 @@ public class DIYProjectPanel {
 		/* TEMPORARY
 		addComponent(myComponentDatabase.getComponent(1), 1);
 		addComponent(myComponentDatabase.getComponent(2), 1);
-		addComponent(myComponentDatabase.getComponent(3), 1); */
+		addComponent(myComponentDatabase.getComponent(3), 1); */		
 		List<ComponentListItem> compList = myProject.getComponents();
 		
 		for (ComponentListItem CLI : compList) {
 			DIYProjectComponent newComponentDisplay = new DIYProjectComponent(CLI.getComponent(), CLI.getQuantity());
-		    myInnerPane.getChildren().add(newComponentDisplay);			
+			newComponentDisplay.getSelectButton().setToggleGroup(myToggleGroup);
+		    myInnerPane.getChildren().add(newComponentDisplay);
 		}		
 	}
 	
 	public void addComponent(final Component theComponent, final int theQuantity) {
 		myProject.addComponent(theComponent, theQuantity);
 		DIYProjectComponent newComponentDisplay = new DIYProjectComponent(theComponent, theQuantity);
+		newComponentDisplay.getSelectButton().setToggleGroup(myToggleGroup);
 	    myInnerPane.getChildren().add(newComponentDisplay);		
 	}
 	

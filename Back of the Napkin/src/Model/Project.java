@@ -271,6 +271,7 @@ public class Project implements Serializable {
 		for (ComponentListItem c : myComponents) {
 			if (c.getComponent().getMyID() == theID) {
 				myComponents.remove(c);
+				break;
 			}
 		}
 	}
