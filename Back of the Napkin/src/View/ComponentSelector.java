@@ -47,6 +47,10 @@ public class ComponentSelector extends Dialog<Component>{
 	/** The Current project to work with **/
 	private Project myProject;
 	
+	private ObservableList<Component> myObservableList;
+	
+	private Component myNewComponent;
+	
 	/**
 	 * @author Aaron Bardsley
 	 * @param theDatabase the existing component database
@@ -88,17 +92,23 @@ public class ComponentSelector extends Dialog<Component>{
 		newComponentButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+				DIYAddComponentDialog newDialog = new DIYAddComponentDialog();
+				Optional<Component> result = newDialog.view();
+				if (result.isPresent()) {
+					myNewComponent = result.get();
+				}
 			}
 		});
 		
 		deleteComponentButton.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
-			public void handle(ActionEvent event) {
-				
-			}
-			
+			public void handle(ActionEvent event) {				
+				if (mySelectedComponent != null) {
+					myDatabase.deleteComponent(mySelectedComponent.getMyID());
+				}
+				int rowIndex = myTable.getSelectionModel().getSelectedIndex();
+				myObservableList.remove(rowIndex);				
+			}			
 		});
 
 		buttonSplitter.setLeft(buttonFlow);
@@ -126,13 +136,12 @@ public class ComponentSelector extends Dialog<Component>{
 	 * @author Aaron Bardsley
 	 * @return The observable list of components used by the table
 	 */
-	private ObservableList<Component> getInitialData() {		
+	private void setObservableList() {		
 		List<Component> list = new ArrayList<Component>();
 		for(Component initialComponent : myDatabase.getAllComponents()) {
 			list.add(initialComponent);
 		}		
-		ObservableList<Component> data = FXCollections.observableList(list);		
-		return data;		
+		myObservableList = FXCollections.observableList(list);
 	}
 
 	/**
@@ -143,7 +152,8 @@ public class ComponentSelector extends Dialog<Component>{
 	@SuppressWarnings("unchecked") //Unnecessary warning
 	private void buildInitialTable() {
 
-		myTable.setItems(getInitialData());
+		setObservableList();
+		myTable.setItems(myObservableList);
 		
 		TableColumn<Component, String> nameCol = new TableColumn<Component, String>("Name");
 		nameCol.setCellValueFactory(new PropertyValueFactory<Component, String>("name"));
@@ -172,8 +182,8 @@ public class ComponentSelector extends Dialog<Component>{
 		TableColumn<Component, String> materialCol = new TableColumn<Component, String>("Materials");
 		materialCol.setCellValueFactory(new PropertyValueFactory<Component, String>("material"));
 		
-		TableColumn<Component, Double> costPerManHrCol = new TableColumn<Component, Double>("Cost Per Man-hour");
-	    costPerManHrCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("manHrs"));
+		TableColumn<Component, BigDecimal> costPerManHrCol = new TableColumn<Component, BigDecimal>("Cost Per Man-hour");
+	    costPerManHrCol.setCellValueFactory(new PropertyValueFactory<Component, BigDecimal>("unitCostPerManHr"));
 		
 		myTable.getColumns().setAll(nameCol, initialCostCol, monthlyCostCol, lengthCol, widthCol, heightCol,
 				radiusCol, materialCol, costPerManHrCol);
@@ -188,8 +198,4 @@ public class ComponentSelector extends Dialog<Component>{
 		});
 	}
 	
-	private void deleteComponent() {
-		
-	}
-
 }
