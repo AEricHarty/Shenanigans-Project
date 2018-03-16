@@ -1,5 +1,6 @@
 package View;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import Model.Component;
@@ -11,9 +12,12 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
+/**
+ * 
+ * @author Aaron Bardsley
+ *
+ */
 public class DIYAddComponentDialog extends Dialog<Component> {
-	
-	private Component myNewComponent;	
 	
 	public DIYAddComponentDialog() {
 		this.setTitle("Create a new component");
@@ -28,18 +32,20 @@ public class DIYAddComponentDialog extends Dialog<Component> {
 		Label radiusLabel = new Label("Radius: ");
 		Label weightLabel = new Label("Weight: ");
 		Label materialsLabel = new Label("Materials: ");
+		Label manHrsLabel = new Label("Man Hours Amount: ");
 		Label costPerManHrLabel = new Label("Cost Per Man-hour: ");
 		
-		TextField text1 = new TextField();
-		TextField text2 = new TextField();
-		TextField text3 = new TextField();
-		TextField text4 = new TextField();
-		TextField text5 = new TextField();
-		TextField text6 = new TextField();
-		TextField text7 = new TextField();
-		TextField text8 = new TextField();
-		TextField text9 = new TextField();
-		TextField text10 = new TextField();
+		TextField nameField = new TextField();
+		TextField initialCostField = new TextField();
+		TextField monthlyCostField = new TextField();
+		TextField lengthField = new TextField();
+		TextField widthField = new TextField();
+		TextField heightField = new TextField();
+		TextField radiusField = new TextField();
+		TextField weightField = new TextField();
+		TextField materialsField = new TextField();
+		TextField manHrsField = new TextField();
+		TextField costPerManHrsField = new TextField();
 		
 		GridPane grid = new GridPane();
 		grid.add(nameLabel, 1, 1);
@@ -51,17 +57,19 @@ public class DIYAddComponentDialog extends Dialog<Component> {
 		grid.add(radiusLabel, 1, 7);
 		grid.add(weightLabel, 1, 8);
 		grid.add(materialsLabel, 1, 9);
-		grid.add(costPerManHrLabel, 1, 10);
-		grid.add(text1, 2, 1);
-		grid.add(text2, 2, 2);
-		grid.add(text3, 2, 3);
-		grid.add(text4, 2, 4);
-		grid.add(text5, 2, 5);
-		grid.add(text6, 2, 6);
-		grid.add(text7, 2, 7);
-		grid.add(text8, 2, 8);
-		grid.add(text9, 2, 9);
-		grid.add(text10, 2, 10);
+		grid.add(manHrsLabel, 1, 10);
+		grid.add(costPerManHrLabel, 1, 11);
+		grid.add(nameField, 2, 1);
+		grid.add(initialCostField, 2, 2);
+		grid.add(monthlyCostField, 2, 3);
+		grid.add(lengthField, 2, 4);
+		grid.add(widthField, 2, 5);
+		grid.add(heightField, 2, 6);
+		grid.add(radiusField, 2, 7);
+		grid.add(weightField, 2, 8);
+		grid.add(materialsField, 2, 9);
+		grid.add(manHrsField, 2, 10);
+		grid.add(costPerManHrsField, 2, 11);
 		
 		this.getDialogPane().setContent(grid);
 
@@ -74,7 +82,18 @@ public class DIYAddComponentDialog extends Dialog<Component> {
 			@Override
 			public Component call(ButtonType b) {				
 				if (b == applyButton) {
-					return myNewComponent; //temp
+					return new Component(0, nameField.getText(), 
+							new BigDecimal(initialCostField.getText()), 
+							new BigDecimal(monthlyCostField.getText()), 
+							Double.parseDouble(lengthField.getText()), 
+							Double.parseDouble(widthField.getText()), 
+							Double.parseDouble(heightField.getText()), 
+							Double.parseDouble(radiusField.getText()), 
+							Double.parseDouble(weightField.getText()), 
+							materialsField.getText(), 
+							Double.parseDouble(manHrsField.getText()), 
+							new BigDecimal(costPerManHrsField.getText()), 
+							null); //Temporary null for nested components (Aaron)
 				}
 				return null;
 			}			
