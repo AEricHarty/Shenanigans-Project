@@ -103,7 +103,7 @@ public class ComponentDatabase {
 	 * @return The Component, or null if it does not exist.
 	 */
 	public Component getComponent(final int theID, boolean bypassIDCheck) {
-		if (theID < MINIMUM_ID && !bypassIDCheck)
+		if (theID <= MINIMUM_ID && !bypassIDCheck)
 			return null;
 		
 		ComponentHolder cached = myCachedComponents.get(theID);
@@ -183,7 +183,7 @@ public class ComponentDatabase {
 
 			while(res.next()) {
 				int ID = res.getInt("ID");
-				if (ID < MINIMUM_ID)
+				if (ID <= MINIMUM_ID)
 					continue;
 				
 				String name = res.getString("Name");
