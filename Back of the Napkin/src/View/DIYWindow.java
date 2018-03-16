@@ -23,7 +23,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
- 
+
+/**
+ * 
+ * @author Khoa Doan
+ *
+ */
 public class DIYWindow extends Application {
 
 	static int numOfProjects = 4;
@@ -52,9 +57,7 @@ public class DIYWindow extends Application {
     		for (Component c : cList) {
     			System.out.println(c.getMyID() + ", " + c.getName() + ", " + c.getCost() + ", " + c.getCostPerMonth());
     		}
-    		
     	}
-		
 	}
 	
     public static void main(String[] args) {
@@ -69,9 +72,6 @@ public class DIYWindow extends Application {
         final List<Project> list = new LinkedList<>();
         for (int i = 0; i < numOfProjects; i++) {
         	Project p = new Project();
-        	p.setManHrs(1);
-        	p.setMiscCost(new BigDecimal("1.05"));
-        	p.setPowerCost(new BigDecimal("0.00"));
         	p.setName("Temp #" + i);
         	list.add(p);
         	
@@ -130,12 +130,13 @@ public class DIYWindow extends Application {
         
         // Add listeners to ListView's Items
         projectListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
-        	public void changed(ObservableValue<? extends Project> observable,Project oldValue, Project newValue) {
+        	public void changed(ObservableValue<? extends Project> observable, Project oldValue, Project newValue) {
         		System.out.println("New Project: " + newValue.getName());
         		myMenu.updateProject(newValue);		//Added to make save/load work -EH
         		int index = list.indexOf(newValue);
         		border.setCenter(projectPanels.get(index).getPanel());
-        		border.setRight(analysisPanels.get(index).getPanel());
+        		analysisPanels.get(index).updateFields();
+        		border.setRight(analysisPanels.get(index).getPanel());        		
         	}
         });
         
