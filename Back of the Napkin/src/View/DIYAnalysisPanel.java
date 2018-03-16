@@ -20,22 +20,22 @@ import javafx.stage.Stage;
 public class DIYAnalysisPanel implements Observer {
 	
 	/** The Header label. */
-	private final Label HEADER = new Label("Header");
+	private final Label header = new Label("Header");
 	
 	/** The Cost label. */
-	private final Label COST = new Label("Cost");
+	private final Label cost = new Label("Cost");
 	
 	/** The Cost Per Month label. */
-	private final Label COST_PER_MONTH = new Label("Cost Per Month");
+	private final Label costPerMonth = new Label("Cost Per Month");
 	
 	/** The Weight label. */
-	private final Label WEIGHT = new Label("Weight");
+	private final Label weight = new Label("Weight");
 	
 	/** The Man Hours label. */
-	private final Label MAN_HOURS = new Label("Man Hours");
+	private final Label manHours = new Label("Man Hours");
 	
 	/** The Cost Per Man Hour label. */
-	private final Label COST_PER_MAN_HOUR = new Label("Cost Per Man Hour");
+	private final Label costPerManHours = new Label("Cost Per Man Hour");
 	
 	/** The header of the project. */
 	private Label myHeader;
@@ -99,22 +99,22 @@ public class DIYAnalysisPanel implements Observer {
 		myManHoursLabel = new Label(myProject.getTotalManHrs() + "");
 		myCostPerManHourLabel = new Label(myProject.getCostPerMonth().toString());
 		
-        GridPane.setConstraints(HEADER, 0, 0);
+        GridPane.setConstraints(header, 0, 0);
         GridPane.setConstraints(myHeader, 1, 0);
-        GridPane.setConstraints(COST, 0, 1);
+        GridPane.setConstraints(cost, 0, 1);
         GridPane.setConstraints(myCostLabel, 1, 1);
-        GridPane.setConstraints(COST_PER_MONTH, 0, 3);
+        GridPane.setConstraints(costPerMonth, 0, 3);
         GridPane.setConstraints(myCostPerMonthLabel, 1, 3);
-        GridPane.setConstraints(WEIGHT, 0, 4);
+        GridPane.setConstraints(weight, 0, 4);
         GridPane.setConstraints(myWeightLabel, 1, 4);
-        GridPane.setConstraints(MAN_HOURS, 0, 5);
+        GridPane.setConstraints(manHours, 0, 5);
         GridPane.setConstraints(myManHoursLabel, 1, 5);
-        GridPane.setConstraints(COST_PER_MAN_HOUR, 0, 6);
+        GridPane.setConstraints(costPerManHours, 0, 6);
         GridPane.setConstraints(myCostPerManHourLabel, 1, 6);
-        grid.getChildren().addAll(HEADER, myHeader, COST, myCostLabel,
-        		COST_PER_MONTH, myCostPerMonthLabel,
-        		WEIGHT, myWeightLabel, MAN_HOURS, myManHoursLabel,
-        		COST_PER_MAN_HOUR, myCostPerManHourLabel);
+        grid.getChildren().addAll(header, myHeader, cost, myCostLabel,
+        		costPerMonth, myCostPerMonthLabel,
+        		weight, myWeightLabel, manHours, myManHoursLabel,
+        		costPerManHours, myCostPerManHourLabel);
         
         return grid;
 	}
