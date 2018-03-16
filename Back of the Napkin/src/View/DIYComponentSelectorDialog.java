@@ -1,11 +1,10 @@
 package View;
 
-import Model.ComponentDatabase;
-import Model.Project;
-
 import java.util.Optional;
 
 import Model.Component;
+import Model.ComponentDatabase;
+import Model.Project;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;

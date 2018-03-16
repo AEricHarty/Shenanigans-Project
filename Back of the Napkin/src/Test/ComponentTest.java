@@ -91,6 +91,8 @@ class ComponentTest {
 		assertEquals(comp, comp);
 		assertNotEquals(comp, comp2);
 		assertNotEquals(comp, comp3);
+		assertNotEquals(comp, null);
+		assertNotEquals(comp, myCost);
 	}
 	
 	/**@author Eric Harty - hartye@uw.edu*/

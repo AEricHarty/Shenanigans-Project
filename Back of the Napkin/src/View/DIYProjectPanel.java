@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -18,11 +19,15 @@ import javafx.stage.Stage;
 
 public class DIYProjectPanel {
 	
+	private static final String RENAME = "Rename Project";
+	
 	private static final String ADD = "Add Component";
 	
 	private static final String REMOVE = "Remove Component";
 	
 	private Project myProject;
+	
+	private Button myRenameProjectButton;
 	
 	private Button myAddComponentButton;
 	
@@ -38,20 +43,46 @@ public class DIYProjectPanel {
 	
 	private Stage myStage; //invoke myStage.sizeToScene() after an update (Aaron 3/9/2018 12:30am)
 	
+	/**
+	 * @modified Eric Harty - hartye@uw.edu: added rename project button
+	 */
 	public DIYProjectPanel(final Stage theStage, final Project theProject, ComponentDatabase theComponentDatabase) {
 		myStage = theStage;
 		myProject = theProject;
 		myComponentDatabase = theComponentDatabase;
 		
+		myRenameProjectButton = createRenameProjectButton();
 		myAddComponentButton = createAddButton(theComponentDatabase);
 		myRemoveComponentButton = createRemoveButton();
 		
-		myProjectPanel = buildProjectPanel(myAddComponentButton, myRemoveComponentButton);
+		myProjectPanel = buildProjectPanel(myRenameProjectButton, myAddComponentButton, myRemoveComponentButton);
 		
 
 		//dialog = new DIYComponentSelectorDialog(theComponentDatabase, this, theProject); //Aaron Bardsley (3/8/2018 11:58pm)
 	}
 
+	/**
+	 * @author Eric Harty - hartye@uw.edu
+	 * 
+	 * @return the 'Rename Project' Button
+	 * @details On action click opens the input dialog. then renames the project.
+	 */
+	private Button createRenameProjectButton() {
+		final Button renameButton = new Button(RENAME);
+		renameButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				TextInputDialog dialog = new TextInputDialog("untitled");
+				dialog.setTitle("Rename Project");
+				dialog.setContentText("Please enter name:");
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()){
+				   myProject.setName(result.get()); 
+				}
+			}
+		});
+		return renameButton;
+	}
 	
 
 	/**
@@ -100,8 +131,10 @@ public class DIYProjectPanel {
 	
 	/**
 	 * @author Keegan Wantz - wantzkt@uw.edu
+	 * @modified Eric Harty: added rename button
 	 */
-	private BorderPane buildProjectPanel(final Button theAddButton, final Button theRemoveButton) {
+	private BorderPane buildProjectPanel(final Button theRenameButton, 
+			final Button theAddButton, final Button theRemoveButton) {
 		//final Pane pane = new Pane();
 
         BorderPane border = new BorderPane();
@@ -120,7 +153,8 @@ public class DIYProjectPanel {
         border.setCenter(inner);
         
         border.setBottom(bottomSplitter);
-        bottomSplitter.setLeft(theAddButton);
+        bottomSplitter.setLeft(theRenameButton);
+        bottomSplitter.setCenter(theAddButton);
         bottomSplitter.setRight(theRemoveButton);
         
         buildExistingComponents();
