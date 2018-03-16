@@ -96,6 +96,9 @@ public class ComponentSelector extends Dialog<Component>{
 				Optional<Component> result = newDialog.view();
 				if (result.isPresent()) {
 					myNewComponent = result.get();
+					
+					myObservableList.add(myNewComponent);
+					myDatabase.addComponent(myNewComponent);
 				}
 			}
 		});
@@ -105,9 +108,11 @@ public class ComponentSelector extends Dialog<Component>{
 			public void handle(ActionEvent event) {				
 				if (mySelectedComponent != null) {
 					myDatabase.deleteComponent(mySelectedComponent.getMyID());
-				}
-				int rowIndex = myTable.getSelectionModel().getSelectedIndex();
-				myObservableList.remove(rowIndex);				
+					int rowIndex = myTable.getSelectionModel().getSelectedIndex();
+					myObservableList.remove(rowIndex);	
+				} else {
+					return;
+				}			
 			}			
 		});
 
@@ -174,19 +179,22 @@ public class ComponentSelector extends Dialog<Component>{
 		heightCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("height"));
 		
 		TableColumn<Component, Double> radiusCol = new TableColumn<Component, Double>("Radius");
-		radiusCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("radius"));
+		radiusCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("myRadius"));
 		
 		TableColumn<Component, Double> weightCol = new TableColumn<Component, Double>("Weight");
 		weightCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("weight"));
 		
 		TableColumn<Component, String> materialCol = new TableColumn<Component, String>("Materials");
 		materialCol.setCellValueFactory(new PropertyValueFactory<Component, String>("material"));
+
+		TableColumn<Component, Double> manHrsCol = new TableColumn<Component, Double>("Man Hours Amount");
+		manHrsCol.setCellValueFactory(new PropertyValueFactory<Component, Double>("unitManHrs"));
 		
 		TableColumn<Component, BigDecimal> costPerManHrCol = new TableColumn<Component, BigDecimal>("Cost Per Man-hour");
 	    costPerManHrCol.setCellValueFactory(new PropertyValueFactory<Component, BigDecimal>("unitCostPerManHr"));
 		
 		myTable.getColumns().setAll(nameCol, initialCostCol, monthlyCostCol, lengthCol, widthCol, heightCol,
-				radiusCol, materialCol, costPerManHrCol);
+				radiusCol, materialCol, manHrsCol, costPerManHrCol);
 		myTable.setPrefWidth(1000);
 		myTable.setPrefHeight(500);
 		myTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
