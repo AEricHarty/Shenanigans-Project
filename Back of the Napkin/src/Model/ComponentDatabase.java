@@ -103,7 +103,7 @@ public class ComponentDatabase {
 	 * @return The Component, or null if it does not exist.
 	 */
 	public Component getComponent(final int theID, boolean bypassIDCheck) {
-		if (theID < MINIMUM_ID && !bypassIDCheck)
+		if (theID <= MINIMUM_ID && !bypassIDCheck)
 			return null;
 		
 		ComponentHolder cached = myCachedComponents.get(theID);
@@ -183,7 +183,7 @@ public class ComponentDatabase {
 
 			while(res.next()) {
 				int ID = res.getInt("ID");
-				if (ID < MINIMUM_ID)
+				if (ID <= MINIMUM_ID)
 					continue;
 				
 				String name = res.getString("Name");
@@ -198,7 +198,7 @@ public class ComponentDatabase {
 				
 				String material = res.getString("Material");
 				
-				double manHours = res.getDouble("Width");		
+				double manHours = res.getDouble("EstimatedManHours");		
 				BigDecimal costPerManHour = new BigDecimal(res.getString("CostPerManHour"));
 				
 				ComponentHolder cached = myCachedComponents.get(ID);
@@ -240,19 +240,18 @@ public class ComponentDatabase {
 		try {
 			stmt = conn.prepareStatement(insert);
 			stmt.setString(1, theComponent.getName());
-			stmt.setString(2, theComponent.getCost().toString());
-			stmt.setString(3, theComponent.getCostPerMonth().toString());
+			stmt.setString(2, theComponent.getUnitCost().toString());
+			stmt.setString(3, theComponent.getUnitCPM().toString());
 			stmt.setDouble(4, theComponent.getLength());
 			stmt.setDouble(5, theComponent.getWidth());
 			stmt.setDouble(6, theComponent.getHeight());
 			stmt.setDouble(7, theComponent.getMyRadius());
 			stmt.setDouble(8, theComponent.getWeight());
 			stmt.setString(9, theComponent.getMaterial());
-			stmt.setDouble(10, theComponent.getManHrs());
-			stmt.setString(11, theComponent.getCostPerManHr().toString());
+			stmt.setDouble(10, theComponent.getUnitManHrs());
+			stmt.setString(11, theComponent.getUnitCostPerManHr().toString());
 			
-			
-			stmt.executeUpdate();
+			System.out.println(stmt.executeUpdate());
 			stmt.close();
 			return true;
 		} catch (SQLException e) {

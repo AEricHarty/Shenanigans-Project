@@ -33,7 +33,7 @@ import javafx.util.Callback;
  * Displays all existing components from the component database
  * and allows the user to select a component to add to a project.
  */
-public class ComponentSelector extends Dialog<Component>{
+public class DIYComponentSelector extends Dialog<Component>{
 	
 	/** The table for components **/
 	private TableView<Component> myTable;
@@ -47,16 +47,19 @@ public class ComponentSelector extends Dialog<Component>{
 	/** The Current project to work with **/
 	private Project myProject;
 	
+	/** The observable list of components for the table **/
 	private ObservableList<Component> myObservableList;
 	
+	/** The new component to add to the database and table **/
 	private Component myNewComponent;
 	
 	/**
 	 * @author Aaron Bardsley
+	 * 
 	 * @param theDatabase the existing component database
 	 * @param theProject the current project
 	 */
-	public ComponentSelector(ComponentDatabase theDatabase, Project theProject) {
+	public DIYComponentSelector(final ComponentDatabase theDatabase, final Project theProject) {
 		
 		myTable = new TableView<Component>();
 		myDatabase = theDatabase;
@@ -154,7 +157,7 @@ public class ComponentSelector extends Dialog<Component>{
 	 * 
 	 * Initialize the table from the constructor.
 	 */
-	@SuppressWarnings("unchecked") //Unnecessary warning
+	//@SuppressWarnings("unchecked") //Unnecessary warning
 	private void buildInitialTable() {
 
 		setObservableList();
@@ -195,7 +198,7 @@ public class ComponentSelector extends Dialog<Component>{
 		
 		myTable.getColumns().setAll(nameCol, initialCostCol, monthlyCostCol, lengthCol, widthCol, heightCol,
 				radiusCol, materialCol, manHrsCol, costPerManHrCol);
-		myTable.setPrefWidth(1000);
+		myTable.setPrefWidth(1200);
 		myTable.setPrefHeight(500);
 		myTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		

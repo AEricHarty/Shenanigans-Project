@@ -13,12 +13,16 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 /**
- * 
  * @author Aaron Bardsley
- *
+ * 
+ * In input dialog to create new Components.
  */
 public class DIYAddComponentDialog extends Dialog<Component> {
 	
+	/**
+	 * @author Aaron Bardsley
+	 * Simple input dialog to create a new component.
+	 */
 	public DIYAddComponentDialog() {
 		this.setTitle("Create a new component");
 		this.setResizable(true);
@@ -101,6 +105,10 @@ public class DIYAddComponentDialog extends Dialog<Component> {
 		
 	}
 	
+	/**
+	 * @author Aaron Bardsleu
+	 * @return an Optional component
+	 */
 	public Optional<Component> view() {
 		return this.showAndWait();
 	}

@@ -40,7 +40,7 @@ public class DIYProjectPanel {
 	
 	private ComponentDatabase myComponentDatabase;
 	
-	private DIYComponentSelectorDialog dialog;
+	//private DIYComponentSelector dialog;
 	
 	private ToggleGroup myToggleGroup;
 	
@@ -105,7 +105,7 @@ public class DIYProjectPanel {
 		addButton.setOnAction(new EventHandler<ActionEvent>() { //Aaron Bardsley (start)
 			@Override
 			public void handle(ActionEvent event) {
-				ComponentSelector newDialog = new ComponentSelector(myComponentDatabase, myProject);
+				DIYComponentSelector newDialog = new DIYComponentSelector(myComponentDatabase, myProject);
 				Optional<Component> result = newDialog.view();;
 				if (result.isPresent()) {
 					addComponent(result.get(), 1);
